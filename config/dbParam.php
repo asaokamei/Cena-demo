@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'dbname' => 'test_doctrine',
+    'dbname' => 'test_cena',
     'user' => 'admin',
     'password' => 'admin',
     'host' => 'localhost',

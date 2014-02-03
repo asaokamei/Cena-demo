@@ -10,7 +10,7 @@ require_once( dirname(__DIR__) . '/autoload.php' );
 
 // Create a simple "default" Doctrine ORM configuration for Annotations
 $paths = array(
-    dirname(__DIR__) ."/src/Models"
+    dirname(__DIR__) ."/src/Demo/Models"
 );
 $isDevMode = false;
 
