@@ -1,6 +1,8 @@
 <?php
 namespace Demo\Models;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Class PostDto
  * @package Demo\Models
@@ -45,6 +47,11 @@ class PostDto
      * @JoinColumn( name="comment_id", referencedColumnName="comment_id" )
      */
     protected $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * @PrePersist
@@ -116,5 +123,21 @@ class PostDto
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return CommentDto[] mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param CommentDto[]  $comments
+     */
+    public function setComments( $comments )
+    {
+        $this->comments = $comments;
     }
 }
