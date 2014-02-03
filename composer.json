@@ -10,6 +10,7 @@
     "minimum-stability": "dev",
     "require": {
         "cena/cena": "dev-master",
-        "cena/doctrine2": "dev-master"
+        "cena/doctrine2": "dev-master",
+        "michelf/php-markdown":"1.4.*@dev"
     }
 }
