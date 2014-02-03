@@ -8,9 +8,6 @@ namespace Demo\Models;
  */
 class CommentDto
 {
-    const STATUS_NOT_YET  = '1';
-    const STATUS_APPROVED = '2';
-
     /**
      * @var int
      * @id @GeneratedValue
@@ -66,6 +63,14 @@ class CommentDto
     }
 
     /**
+     * @param PostDto $post
+     */
+    public function setPost( $post )
+    {
+        $this->post = $post;
+    }
+
+    /**
      * @return string
      */
     public function getComment()
@@ -95,13 +100,5 @@ class CommentDto
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     *
-     */
-    public function approve()
-    {
-        $this->status = self::STATUS_APPROVED;
     }
 }

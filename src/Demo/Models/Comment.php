@@ -12,6 +12,9 @@ namespace Demo\Models;
  */
 class Comment extends CommentDto
 {
+    const STATUS_NOT_YET  = '1';
+    const STATUS_APPROVED = '2';
+
     /**
      * @return bool
      */
