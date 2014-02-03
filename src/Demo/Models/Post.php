@@ -18,6 +18,15 @@ class Post extends PostDto
     const STATUS_HIDE    = '9';
 
     /**
+     *
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->status = self::STATUS_PREVIEW;
+    }
+
+    /**
      * returns html from markdown text.
      *
      * @return string
@@ -27,16 +36,25 @@ class Post extends PostDto
         return MarkdownExtra::defaultTransform( $this->content );
     }
 
+    /**
+     *
+     */
     public function goPublic()
     {
         $this->status = self::STATUS_PUBLIC;
     }
 
+    /**
+     *
+     */
     public function hide()
     {
         $this->status = self::STATUS_HIDE;
     }
 
+    /**
+     *
+     */
     public function preview()
     {
         $this->status = self::STATUS_PREVIEW;

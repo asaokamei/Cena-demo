@@ -16,7 +16,7 @@ class CommentDto
     protected $comment_id;
 
     /**
-     * @var
+     * @var Post
      * @ManyToOne( targetEntity="Demo\Models\Post", inversedBy="comments" )
      * @JoinColumn( name="post_id", referencedColumnName="post_id" )
      */

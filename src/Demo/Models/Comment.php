@@ -17,6 +17,14 @@ class Comment extends CommentDto
     const STATUS_REMOVE   = '9';
 
     /**
+     *
+     */
+    public function __construct()
+    {
+        $this->status = self::STATUS_NOT_YET;
+    }
+    
+    /**
      * @return bool
      */
     public function isApproved()
