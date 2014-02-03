@@ -1,0 +1,15 @@
+{
+    "name": "asaokamei/cena-demo",
+    "description": "Demo for Cena Project.",
+    "authors": [
+        {
+            "name": "Asao",
+            "email": "kamei@workspot.jp"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "cena/cena": "dev-master",
+        "cena/doctrine2": "dev-master"
+    }
+}
