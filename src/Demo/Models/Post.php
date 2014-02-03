@@ -13,6 +13,10 @@ use Michelf\MarkdownExtra;
  */
 class Post extends PostDto
 {
+    const STATUS_PREVIEW = '1';
+    const STATUS_PUBLIC  = '5';
+    const STATUS_HIDE    = '9';
+
     /**
      * returns html from markdown text.
      *
@@ -21,5 +25,20 @@ class Post extends PostDto
     public function getContentHtml()
     {
         return MarkdownExtra::defaultTransform( $this->content );
+    }
+
+    public function goPublic()
+    {
+        $this->status = self::STATUS_PUBLIC;
+    }
+
+    public function hide()
+    {
+        $this->status = self::STATUS_HIDE;
+    }
+
+    public function preview()
+    {
+        $this->status = self::STATUS_PREVIEW;
     }
 }

@@ -18,6 +18,12 @@ class PostDto
     protected $post_id;
 
     /**
+     * @var int
+     * @Column(type="integer")
+     */
+    protected $status;
+
+    /**
      * @var string
      * @Column(type="string")
      */
@@ -139,5 +145,13 @@ class PostDto
     public function setComments( $comments )
     {
         $this->comments = $comments;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
