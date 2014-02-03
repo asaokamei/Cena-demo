@@ -3,3 +3,4 @@
 
 #composer and other vendor staff
 vendor/*
+composer.lock
