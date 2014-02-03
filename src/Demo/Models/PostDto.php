@@ -154,4 +154,12 @@ class PostDto
     {
         return $this->status;
     }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus( $status )
+    {
+        $this->status = $status;
+    }
 }

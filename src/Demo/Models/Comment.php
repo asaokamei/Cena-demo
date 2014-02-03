@@ -23,7 +23,7 @@ class Comment extends CommentDto
     {
         $this->status = self::STATUS_NOT_YET;
     }
-    
+
     /**
      * @return bool
      */
