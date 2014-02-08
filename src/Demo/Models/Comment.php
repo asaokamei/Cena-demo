@@ -25,6 +25,23 @@ class Comment extends CommentDto
     }
 
     /**
+     * @PrePersist
+     */
+    public function setCreatedAt()
+    {
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = $this->createdAt;
+    }
+
+    /**
+     * @PreUpdate
+     */
+    public function setUpdatedAt()
+    {
+        $this->updatedAt = new \DateTime('now');
+    }
+
+    /**
      * @return bool
      */
     public function isApproved()
