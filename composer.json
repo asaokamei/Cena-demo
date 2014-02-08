@@ -12,5 +12,10 @@
         "cena/cena": "dev-master",
         "cena/doctrine2": "dev-master",
         "michelf/php-markdown":"1.4.*@dev"
+    },
+    "autoload":{
+        "psr-4": {
+            "Demo\\":"src/"
+        }
     }
 }
