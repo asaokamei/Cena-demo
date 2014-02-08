@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'dbname' => 'test_cena',
+    'dbname' => 'cena_demo',
     'user' => 'admin',
     'password' => 'admin',
     'host' => 'localhost',

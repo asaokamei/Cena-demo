@@ -12,7 +12,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
     
     public $postClass = 'Demo\Models\Post';
 
-    static function XsetUpBeforeClass()
+    static function setUpBeforeClass()
     {
         require_once( __DIR__ . '/../../autoload.php' );
         $em = include( __DIR__ . '/../../em-doctrine2.php' );
