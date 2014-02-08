@@ -1,6 +1,7 @@
 <?php
 namespace Demo\Resources;
 
+use Cena\Cena\Process;
 use Demo\Models\Comment;
 use Demo\Models\Post;
 use Doctrine\ORM\EntityManager;
@@ -28,15 +29,21 @@ class Posting
      */
     protected $em;
 
+    /**
+     * @var Process
+     */
+    protected $process;
     // +----------------------------------------------------------------------+
     //  managing object.
     // +----------------------------------------------------------------------+
     /**
      * @param EntityManager $em
+     * @param Process       $process
      */
-    public function __construct( $em )
+    public function __construct( $em, $process )
     {
         $this->em = $em;
+        $this->process = $process;
     }
 
     /**
@@ -53,6 +60,8 @@ class Posting
     //  manipulating resource.
     // +----------------------------------------------------------------------+
     /**
+     * get an existing Post data. 
+     * 
      * @param int $id
      * @throws \RuntimeException
      * @return $this
@@ -72,33 +81,45 @@ class Posting
     }
 
     /**
-     *
+     * create a new Post. 
+     * 
      * @return $this
      */
     public function onNew()
     {
         if( !$this->post ) {
             $this->post = new Post();
+            $this->em->persist( $this->post );
         }
         return $this;
     }
 
     /**
+     * modify an existing post and save to db. 
+     * 
      * @param int $id
      * @return $this
      */
     public function onPut( $id )
     {
         $this->onGet( $id );
+        $this->process->setSource( $this->data );
+        $this->process->posts();
+        $this->em->flush();
         return $this;
     }
 
     /**
-     *
+     * create a new post and save to db. 
+     * 
      * @return $this
      */
     public function onPost()
     {
+        $this->onNew();
+        $this->process->setSource( $this->data );
+        $this->process->posts();
+        $this->em->flush();
         return $this;
     }
 
