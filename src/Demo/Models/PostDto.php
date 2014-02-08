@@ -60,22 +60,6 @@ class PostDto
     }
 
     /**
-     * @PrePersist
-     */
-    public function setCreatedAt()
-    {
-        $this->createdAt = new \DateTime('now');
-    }
-
-    /**
-     * @PreUpdate
-     */
-    public function setUpdatedAt()
-    {
-        $this->updatedAt = new \DateTime('now');
-    }
-
-    /**
      * @return int
      */
     public function getPostId()
