@@ -14,8 +14,8 @@
         "michelf/php-markdown":"1.4.*@dev"
     },
     "autoload":{
-        "psr-0": {
-            "Demo\\":"src/"
+        "psr-4": {
+            "Demo\\":"src/Demo/"
         }
     }
 }
