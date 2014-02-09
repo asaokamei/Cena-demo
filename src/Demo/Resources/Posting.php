@@ -2,6 +2,7 @@
 namespace Demo\Resources;
 
 use Cena\Cena\Process;
+use Cena\Cena\CenaManager;
 use Demo\Models\Comment;
 use Demo\Models\Post;
 use Doctrine\ORM\EntityManager;
@@ -28,6 +29,11 @@ class Posting
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var CenaManager
+     */
+    protected $cm;
 
     /**
      * @var Process
@@ -72,7 +78,7 @@ class Posting
             return $this->onNew();
         }
         if( !$this->post ) {
-            $this->post = $this->em->find( 'Demo\Models\Post', $id );
+            $this->post = $this->cm->getEntity( 'Post', $id );
             if( !$this->post ) {
                 throw new \RuntimeException( 'Cannot find Post #'.$id );
             }
@@ -88,8 +94,7 @@ class Posting
     public function onNew()
     {
         if( !$this->post ) {
-            $this->post = new Post();
-            $this->em->persist( $this->post );
+            $this->post = $this->cm->newEntity( 'Post' );
         }
         return $this;
     }
@@ -105,7 +110,7 @@ class Posting
         $this->onGet( $id );
         $this->process->setSource( $this->data );
         $this->process->posts();
-        $this->em->flush();
+        $this->cm->save();
         return $this;
     }
 
@@ -119,7 +124,7 @@ class Posting
         $this->onNew();
         $this->process->setSource( $this->data );
         $this->process->posts();
-        $this->em->flush();
+        $this->cm->save();
         return $this;
     }
 
@@ -130,7 +135,7 @@ class Posting
     public function onDel( $id )
     {
         $this->onGet( $id );
-        $this->em->remove( $this->post );
+        $this->cm->getEntityManager()->em()->remove( $this->post );
         return $this;
     }
 
