@@ -35,7 +35,7 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $this->cm = include( __DIR__ . '/../../cm-doctrine2.php' );
         $this->cm->setClass( 'Demo\Models\Post' );
-        $process = new Process();
+        $process = new Process( $this->cm );
         $this->post = new Posting( $this->cm, $process );
     }
 
@@ -67,5 +67,25 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $comment = $this->post->getNewComment();
         $post    = $comment->getPost();
         $this->assertSame( $this->post->getPost(), $post );
+    }
+
+    /**
+     * @test
+     */
+    function onPost_creates_new_post()
+    {
+        $input = array(
+            'post.0.1' => array(
+                'prop' => array(
+                    'title' => 'title:'.md5(uniqid()),
+                    'content' => 'content:'.md5(uniqid()),
+                ),
+            )
+        );
+        $this->post->with( $input );
+        $this->post->onPost();
+        
+        $post_id = $this->post->getPost()->getPostId();
+        $this->assertTrue( $post_id > 0 );
     }
 }

@@ -103,7 +103,7 @@ class Posting
     {
         $this->onGet( $id );
         $this->process->setSource( $this->data );
-        $this->process->posts();
+        $this->process->process();
         $this->cm->save();
         return $this;
     }
@@ -117,7 +117,7 @@ class Posting
     {
         $this->onNew();
         $this->process->setSource( $this->data );
-        $this->process->posts();
+        $this->process->process();
         $this->cm->save();
         return $this;
     }
