@@ -49,10 +49,13 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
         return $post;
     }
     
-    function makeNewComment()
+    function makeNewComment( $post=null )
     {
         $comment = new \Demo\Models\Comment();
         $comment->setComment( 'comment:'.md5(uniqid()) );
+        if( $post ) {
+            $comment->setPost( $post );
+        }
         return $comment;
     }
 
@@ -88,10 +91,8 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
     {
         // create a post and associated 2 comments. 
         $post = $this->makeNewPost();
-        $com1 = $this->makeNewComment();
-        $com2 = $this->makeNewComment();
-        $com1->setPost( $post );
-        $com2->setPost( $post );
+        $com1 = $this->makeNewComment( $post );
+        $com2 = $this->makeNewComment( $post );
         // and save them. 
         $this->em->persist( $post );
         $this->em->persist( $com1 );
