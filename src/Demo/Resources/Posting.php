@@ -5,7 +5,6 @@ use Cena\Cena\Process;
 use Cena\Cena\CenaManager;
 use Demo\Models\Comment;
 use Demo\Models\Post;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Class Posting
@@ -26,11 +25,6 @@ class Posting
     protected $data = array();
 
     /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
      * @var CenaManager
      */
     protected $cm;
@@ -43,12 +37,12 @@ class Posting
     //  managing object.
     // +----------------------------------------------------------------------+
     /**
-     * @param EntityManager $em
+     * @param CenaManager   $cm
      * @param Process       $process
      */
-    public function __construct( $em, $process )
+    public function __construct( $cm, $process )
     {
-        $this->em = $em;
+        $this->cm = $cm;
         $this->process = $process;
     }
 
