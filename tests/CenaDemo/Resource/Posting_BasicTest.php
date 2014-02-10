@@ -14,6 +14,11 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
     public $cm;
 
     /**
+     * @var Process
+     */
+    public $process;
+
+    /**
      * @var Posting
      */
     public $post;
@@ -35,8 +40,16 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $this->cm = include( __DIR__ . '/../../cm-doctrine2.php' );
         $this->cm->setClass( 'Demo\Models\Post' );
-        $process = new Process( $this->cm );
-        $this->post = new Posting( $this->cm, $process );
+        $this->cm->setClass( 'Demo\Models\Comment' );
+        $this->process = new Process( $this->cm );
+        $this->post = $this->getNewPosting();
+    }
+
+    /**
+     * @return Posting
+     */
+    function getNewPosting() {
+        return new Posting( $this->cm, $this->process );
     }
 
     function test0()
@@ -74,18 +87,39 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
      */
     function onPost_creates_new_post()
     {
+        $md_content = 'content:'.md5(uniqid());
+        $md_comment = 'comment:'.md5(uniqid());
         $input = array(
             'post.0.1' => array(
                 'prop' => array(
                     'title' => 'title:'.md5(uniqid()),
-                    'content' => 'content:'.md5(uniqid()),
+                    'content' => $md_content,
                 ),
-            )
+            ),
+            'comment.0.1' => array(
+                'prop' => array(
+                    'comment' => $md_comment,
+                ),
+                'link' => array(
+                    'post' => 'post.0.1'
+                ),
+            ),
         );
         $this->post->with( $input );
         $this->post->onPost();
         
         $post_id = $this->post->getPost()->getPostId();
         $this->assertTrue( $post_id > 0 );
+        
+        // retrieve from database. 
+        $this->cm->getEntityManager()->em()->clear();
+        $post = $this->getNewPosting();
+        $post->onGet( $post_id );
+        
+        $this->assertEquals( $post_id, $post->getPost()->getPostId() );
+        $comments = $post->getComments();
+        $this->assertEquals( 1, count( $comments ) );
+        $this->assertEquals( $md_content, $post->getPost()->getContent() );
+        $this->assertEquals( $md_comment, $comments[0]->getComment() );
     }
 }
