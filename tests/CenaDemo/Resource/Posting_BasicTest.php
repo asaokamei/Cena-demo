@@ -112,7 +112,7 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( $post_id > 0 );
         
         // retrieve from database. 
-        $this->cm->getEntityManager()->em()->clear();
+        $this->cm->clear();
         $post = $this->getNewPosting();
         $post->onGet( $post_id );
         
@@ -121,5 +121,54 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 1, count( $comments ) );
         $this->assertEquals( $md_content, $post->getPost()->getContent() );
         $this->assertEquals( $md_comment, $comments[0]->getComment() );
+    }
+
+    /**
+     * this test does not work, but do not know why... 
+     * maybe Doctrine2 requires to relate at owning side. 
+     * 
+     * @ test
+     */
+    function onPost_creates_new_post_with_post2comment_link()
+    {
+        $md_content = 'content:'.md5(uniqid());
+        $md_comment = 'comment:'.md5(uniqid());
+        $input = array(
+            'post.0.1' => array(
+                'prop' => array(
+                    'title' => 'title:'.md5(uniqid()),
+                    'content' => $md_content,
+                ),
+                'link' => array(
+                    'comments' => [ 'comment.0.1' ],
+                ),
+            ),
+            'comment.0.1' => array(
+                'prop' => array(
+                    'comment' => $md_comment,
+                ),
+            ),
+        );
+        $this->post->with( $input );
+        $this->post->onPost();
+
+        $post_id = $this->post->getPost()->getPostId();
+        $this->assertTrue( $post_id > 0 );
+
+        // retrieve from database. 
+        $this->cm->clear();
+        $post = $this->getNewPosting();
+        $post->onGet( $post_id );
+
+        $this->assertEquals( $post_id, $post->getPost()->getPostId() );
+        $comments = $post->getComments();
+        $this->assertEquals( 1, count( $comments ) );
+        $this->assertEquals( $md_content, $post->getPost()->getContent() );
+        $this->assertEquals( $md_comment, $comments[0]->getComment() );
+    }
+    
+    function onPut_modifies_existing_data()
+    {
+        // let's save a new post and a comment. 
     }
 }
