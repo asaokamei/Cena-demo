@@ -132,6 +132,14 @@ class PostDto
     }
 
     /**
+     * @param CommentDto $comment
+     */
+    public function addComment( $comment )
+    {
+        $this->comments[] = $comment;
+    }
+
+    /**
      * @return int
      */
     public function getStatus()

@@ -159,7 +159,7 @@ class Posting
     {
         $comment = new Comment();
         $comment->setPost( $this->post );
-        $this->post->setComments( $comment );
+        $this->post->addComment( $comment );
         return $comment;
     }
     // +----------------------------------------------------------------------+
