@@ -4,6 +4,7 @@ namespace CenaDemo\Resource;
 use Cena\Cena\CenaManager;
 use Cena\Cena\Process;
 use Demo\Resources\Posting;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
 class Posting_BasicTest extends \PHPUnit_Framework_TestCase
@@ -238,5 +239,51 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         foreach( $comments as $c ) {
             $this->assertEquals( $md_comment, $c->getComment() );
         }
+    }
+
+    /**
+     * @test
+     */
+    function onDel_removes_post_and_comment_from_db()
+    {
+        // let's save a new post and a comment. 
+        $input = array(
+            'post.0.1' => array( 'prop' => [
+                'title' => 'title:',
+                'content' => 'content',
+            ], ),
+            'comment.0.1' => array(
+                'prop' => [ 'comment' => 'comment', ],
+                'link' => [ 'post'    => 'post.0.1' ],
+            ),
+            'comment.0.2' => array(
+                'prop' => [ 'comment' => 'comment', ],
+                'link' => [ 'post'    => 'post.0.1' ],
+            ),
+        );
+        $this->post->with( $input );
+        $this->post->onPost();
+        $post_id = $this->post->getPost()->getPostId();
+
+        // get the post from database. 
+        $this->cm->clear();
+        $post = $this->getNewPosting();
+        $post->onGet( $post_id );
+        
+        $comments = $post->getComments();
+        $com_id1 = $comments[0]->getCommentId();
+        $com_id2 = $comments[1]->getCommentId();
+        
+        // delete
+        $this->cm->clear();
+        $post = $this->getNewPosting();
+        $post->onDel( $post_id );
+        
+        // make sure any of the post and comments are in db.
+        /** @var EntityManager $em */
+        $em = $this->cm->getEntityManager()->em();
+        $this->assertEquals( null, $em->find( 'Demo\Models\Post', $post_id ) );
+        $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id1 ) );
+        $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id2 ) );
     }
 }
