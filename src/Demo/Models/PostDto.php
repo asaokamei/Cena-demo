@@ -128,7 +128,7 @@ class PostDto
      */
     public function setComments( $comments )
     {
-        $this->comments = $comments;
+        $this->comments = new ArrayCollection( $comments );
     }
 
     /**
