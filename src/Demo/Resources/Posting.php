@@ -130,6 +130,7 @@ class Posting
     {
         $this->onGet( $id );
         $this->cm->delEntity( $this->post );
+        $this->cm->save();
         return $this;
     }
 
