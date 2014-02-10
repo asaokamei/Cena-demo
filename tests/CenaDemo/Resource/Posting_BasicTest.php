@@ -166,9 +166,77 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( $md_content, $post->getPost()->getContent() );
         $this->assertEquals( $md_comment, $comments[0]->getComment() );
     }
-    
+
+    /**
+     * @test
+     */
     function onPut_modifies_existing_data()
     {
         // let's save a new post and a comment. 
+        $input = array(
+            'post.0.1' => array( 'prop' => [
+                    'title' => 'title:',
+                    'content' => 'content',
+            ], ),
+            'comment.0.1' => array( 
+                'prop' => [ 'comment' => 'comment', ],
+                'link' => [ 'post'    => 'post.0.1' ],
+            ),
+            'comment.0.2' => array(
+                'prop' => [ 'comment' => 'comment', ],
+                'link' => [ 'post'    => 'post.0.1' ],
+            ),
+        );
+        $this->post->with( $input );
+        $this->post->onPost();
+
+        $post_id = $this->post->getPost()->getPostId();
+        $this->assertTrue( $post_id > 0 );
+        
+        // get the post from database. 
+        $this->cm->clear();
+        $post = $this->getNewPosting();
+        $post->onGet( $post_id );
+
+        $this->assertEquals( $post_id, $post->getPost()->getPostId() );
+        $comments = $post->getComments();
+        $this->assertEquals( 2, count( $comments ) );
+        foreach( $comments as $c ) {
+            $this->assertEquals( 'comment', $c->getComment() );
+        }
+        
+        // update with the input
+        $post_cena_id = 'post.1.' . $post_id;
+        $com1_cena_id = 'comment.1.' . $comments[0]->getCommentId();
+        $com2_cena_id = 'comment.1.' . $comments[1]->getCommentId();
+        $md_content = 'content:'.md5(uniqid());
+        $md_comment = 'comment:'.md5(uniqid());
+        $input = array(
+            $post_cena_id => array(
+                'prop' => [ 'content' => $md_content ],
+            ),
+            $com1_cena_id => array(
+                'prop' => [ 'comment' => $md_comment ],
+            ),
+            $com2_cena_id => array(
+                'prop' => [ 'comment' => $md_comment ],
+            ),
+        );
+        
+        $post->with( $input );
+        $post->onPut( $post_id );
+
+        // get the post from database. 
+        $this->cm->clear();
+        $post = $this->getNewPosting();
+        $post->onGet( $post_id );
+
+        $this->assertEquals( $post_id, $post->getPost()->getPostId() );
+        $comments = $post->getComments();
+        $this->assertEquals( $md_content, $post->getPost()->getContent() );
+        $this->assertEquals( 2, count( $comments ) );
+        foreach( $comments as $c ) {
+            $this->assertEquals( $md_comment, $c->getComment() );
+        }
     }
 }
