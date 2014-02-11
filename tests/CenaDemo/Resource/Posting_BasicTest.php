@@ -286,4 +286,93 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id1 ) );
         $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id2 ) );
     }
+
+    /**
+     * @test
+     */
+    function formName_for_new_objects_returns_cena_id()
+    {
+        // get a new post data 
+        $this->post->onNew();
+        $post = $this->post->getPost();
+        $this->assertEquals( 'Cena[post][0][1][prop][content]', $this->cm->formName( $post, 'content' ) );
+        
+        $comment = $this->post->getNewComment();
+        $this->assertEquals( 'Cena[comment][0][2][prop][comment]', $this->cm->formName( $comment, 'comment' ) );
+    }
+
+    /**
+     * @test
+     */
+    function formName_for_entities_from_database() 
+    {
+        // clear and save
+        $md_content = 'content:'.md5(uniqid());
+        $md_comment = 'comment:'.md5(uniqid());
+        $input = array(
+            'post.0.1' => array( 'prop' => [
+                    'title' => 'title:'.md5(uniqid()),
+                    'content' => $md_content,
+            ],),
+            'comment.0.1' => array(
+                'prop' => [  'comment' => $md_comment, ],
+                'link' => [  'post' => 'post.0.1' ],
+            ),
+        );
+        $this->post->with( $input );
+        $this->post->onPost();
+        $post_id = $this->post->getPost()->getPostId();
+
+        // 
+        $this->cm->clear();
+        $posting = $this->getNewPosting();
+        $posting->onGet( $post_id );
+        
+        $post = $posting->getPost();
+        $comments = $posting->getComments();
+        $comment  = $comments[0];
+        $this->assertEquals( "Cena[post][1][{$post->getPostId()}][prop][content]", $this->cm->formName( $post, 'content' ) );
+        $this->assertEquals( "Cena[comment][1][{$comment->getCommentId()}][prop][comment]", $this->cm->formName( $comment, 'comment' ) );
+    }
+
+    /**
+     * @test
+     */
+    function convert_post_to_cena_id_input()
+    {
+        $md_content = 'content:'.md5(uniqid());
+        $md_comment = 'comment:'.md5(uniqid());
+        $post_info  = array('prop' => [
+            'title' => $md_content,
+            'content' => $md_content,
+        ]);
+        $comment_info = array(
+            'prop' => [  'comment' => $md_comment, ],
+            'link' => [  'post' => 'post.0.1' ],
+        );
+        $post = array( 'Cena' => array(
+                'post' => [
+                    '0' => [
+                        '1' => $post_info
+                    ]
+                ],
+                'comment' => [
+                    '0' => [
+                        '1' => $comment_info,
+                    ]
+                ]
+        ) );
+        $input = array(
+            'post.0.1' => array( 'prop' => [
+                'title' => $md_content,
+                'content' => $md_content,
+            ],),
+            'comment.0.1' => array(
+                'prop' => [  'comment' => $md_comment, ],
+                'link' => [  'post' => 'post.0.1' ],
+            ),
+        );
+        $this->process->setSource( $post );
+        $this->assertEquals( $input, $this->process->getSource() );
+    }
 }
