@@ -1,3 +1,6 @@
+*, *.before, *.after {
+    box-sizing: border-box;
+} 
 body {
     font-size: 16px;
     width: 600px;
@@ -32,7 +35,7 @@ nav ul {
 }
 nav ul li {
     float: left;
-    width: 5em;
+    width: 8em;
     padding: 2px 1em 2px 4px;
     margin: 0 5px 0 5px;
     list-style: none;
@@ -52,6 +55,13 @@ div.post h1 {
     padding-left: 0.5em;
     color: darkgreen;
 }
+div.post span.date {
+    color: #666666;
+    font-size: 12px;
+    font-weight: normal;
+    display: block;
+}
+
 div.comments {
     width: 400px;
 }

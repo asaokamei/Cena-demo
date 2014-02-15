@@ -17,12 +17,6 @@ $newComment = $posting->getNewComment();
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <style>
-    span.date {
-        color: gray;
-        font-size: 12px;
-        font-weight: normal;
-        display: block;
-    }
 </style>
 <div class="post">
     <h1><span class="date">[<?= $post->getCreatedAt()->format( 'Y.m.d' ); ?>]</span><?= $post->getTitle(); ?></h1>

@@ -16,12 +16,14 @@ $posts = $query->getResult();
 <style>
     span.date {
         font-size: 0.8em;
-        color: gray;
+        color: #999999;
     }
     a.title {
         text-decoration: none;
         font-weight: bold;
         color: darkgreen;
+        border-left: 3px solid darkgreen;
+        padding-left: 4px;
     }
     ul {
         margin: 1em 0 1em 0;
