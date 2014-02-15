@@ -22,6 +22,7 @@ $newComment = $posting->getNewComment();
     <span><?= $post->getContentHtml(); ?></span>
     <a href="edit.php?id=<?= $post->getPostId(); ?>" >edit this post</a>
 </div>
+<h2>comments...</h2>
 <?php
 /*
  * list all comments. 
@@ -37,7 +38,7 @@ foreach ( $comments as $comment ) {
     <?php }
     // for adding a new comment. 
     else { ?>
-        <form name="addPost" method="post" action="cena.php" >
+        <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
             <div class="comment">
                 <input type="hidden" name="<?= $cm->formBase( $newComment )?>[link][post]" value="<?= $cm->cenaId($post); ?>">
                 <textarea type="text" name="<?= $cm->formBase( $newComment )?>[prop][comment]" placeholder="comment here..."></textarea>
