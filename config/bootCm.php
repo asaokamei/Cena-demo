@@ -23,7 +23,7 @@ $cm = new CenaManager(
 );
 $cm->setEntityManager( $ema );
 
-$cm->setClass( '\Demo\Models\Post' );
-$cm->setClass( '\Demo\Models\Comment' );
+$cm->setClass( 'Demo\Models\Post' );
+$cm->setClass( 'Demo\Models\Comment' );
 
 return $cm;
