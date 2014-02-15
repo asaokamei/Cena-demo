@@ -13,13 +13,38 @@ $posts = $query->getResult();
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>
-<h1>Post Lists</h1>
+<style>
+    span.date {
+        font-size: 0.8em;
+        color: gray;
+    }
+    a.title {
+        text-decoration: none;
+        font-weight: bold;
+        color: darkgreen;
+    }
+    ul {
+        margin: 1em 0 1em 0;
+        padding: 0;
+    }
+    li {
+        list-style: none;
+        margin: 15px 0 10px 0;
+        padding: 0 0 5px 0;
+        border-bottom: 1px dotted gray;
+    }
+</style>
+<div class="post">
+    <h1>Post Lists</h1>
+</div>
 <ul>
     <?php
     foreach ( $posts as $post ) {
         ?>
-        <li><a href="post.php?id=<?= $post->getPostId(); ?>" ><?= $post->getTitle(); ?></a> [<?= $post->getCreatedAt()->format('Y.m.d'); ?>]<br/>
-            <?= $post->getContent(); ?></li>
+        <li>
+            <span class="date" >[<?= $post->getCreatedAt()->format('Y.m.d'); ?>]</span><br/>
+            <a href="post.php?id=<?= $post->getPostId(); ?>" class="title"><?= $post->getTitle(); ?></a>
+        </li>
     <?php } ?>
 </ul>
 <?php include( __DIR__.'/menu/footer.php' ); ?>

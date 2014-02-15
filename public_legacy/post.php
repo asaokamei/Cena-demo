@@ -16,35 +16,49 @@ $newComment = $posting->getNewComment();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
+<style>
+    span.date {
+        color: gray;
+        font-size: 12px;
+        font-weight: normal;
+        display: block;
+    }
+</style>
 <div class="post">
-    <h1><?= $post->getTitle(); ?></h1>
-    <span><?= $post->getCreatedAt()->format( 'Y.m.d' ); ?></span>
+    <h1><span class="date">[<?= $post->getCreatedAt()->format( 'Y.m.d' ); ?>]</span><?= $post->getTitle(); ?></h1>
+    <div style="clear: both" ></div>
+</div><div class="content">
     <span><?= $post->getContentHtml(); ?></span>
-    <a href="edit.php?id=<?= $post->getPostId(); ?>" >edit this post</a>
 </div>
-<h2>comments...</h2>
-<?php
-/*
- * list all comments. 
- */
-foreach ( $comments as $comment ) { 
-    ?>
-    <hr>
-    <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
-        <div class="comment">
-            <h3><?= $comment->getComment(); ?></h3>
-            <span><?= $comment->getCreatedAt()->format( 'Y.m.d' ); ?></span>
-        </div>
-    <?php }
-    // for adding a new comment. 
-    else { ?>
-        <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
+<div>
+    <button class="editPost" onclick="location.href='edit.php?id=<?= $post->getPostId(); ?>'" >edit this post</button>
+    <div style="clear: both" ></div>
+</div>
+<div class="comments">
+    <h2>comments...</h2>
+    <?php
+    /*
+     * list all comments. 
+     */
+    foreach ( $comments as $comment ) {
+        ?>
+        <hr>
+        <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
             <div class="comment">
-                <input type="hidden" name="<?= $cm->formBase( $newComment )?>[link][post]" value="<?= $cm->cenaId($post); ?>">
-                <textarea type="text" name="<?= $cm->formBase( $newComment )?>[prop][comment]" placeholder="comment here..."></textarea>
+                <span class="date">[<?= $comment->getCreatedAt()->format( 'Y.m.d' ); ?>]</span>
+                <span class="comment"><?= $comment->getComment(); ?></span>
             </div>
-            <button type="submit">add comment</button>
-        </form>
+        <?php }
+        // for adding a new comment. 
+        else { ?>
+            <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
+                <div class="comment">
+                    <input type="hidden" name="<?= $cm->formBase( $newComment )?>[link][post]" value="<?= $cm->cenaId($post); ?>">
+                    <textarea type="text" name="<?= $cm->formBase( $newComment )?>[prop][comment]" placeholder="comment here..."></textarea>
+                </div>
+                <button type="submit">add comment</button>
+            </form>
+        <?php } ?>
     <?php } ?>
-<?php } ?>
+</div>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>

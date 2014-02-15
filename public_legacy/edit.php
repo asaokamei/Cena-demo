@@ -28,28 +28,30 @@ $newComment = $posting->getNewComment();
             <dd><input type="text" name="<?= $cm->formBase( $post ) ?>[prop][title]"
                        placeholder="title" value="<?= $post->getTitle(); ?>" /></dd>
             <dt>Content:</dt>
-            <dd><textarea type="text" name="<?= $cm->formBase( $post ) ?>[prop][content]" rows="20"
+            <dd><textarea type="text" name="<?= $cm->formBase( $post ) ?>[prop][content]" rows="10"
                           placeholder="content here..."><?= $post->getContent(); ?></textarea></dd>
         </dl>
         <button type="submit">submit post</button>
     </div>
-    <h2>comments...</h2>
-    <?php
-    /*
-     * list all comments. 
-     */
-    foreach ( $comments as $comment ) {
-        ?>
-        <hr>
-        <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
-            <div class="comment">
-                <input type="hidden" name="<?= $cm->formBase( $comment ) ?>[link][post]"
-                       value="<?= $cm->cenaId( $post ); ?>">
-                <textarea type="text" name="<?= $cm->formBase( $comment ) ?>[prop][comment]" rows="5"
-                          placeholder="comment here..."><?= $comment->getComment(); ?></textarea>
-            </div>
+    <div class="comments">
+        <h2>comments...</h2>
+        <?php
+        /*
+         * list all comments. 
+         */
+        foreach ( $comments as $comment ) {
+            ?>
+            <hr>
+            <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
+                <div class="comment">
+                    <input type="hidden" name="<?= $cm->formBase( $comment ) ?>[link][post]"
+                           value="<?= $cm->cenaId( $post ); ?>">
+                    <textarea type="text" name="<?= $cm->formBase( $comment ) ?>[prop][comment]" rows="4"
+                              placeholder="comment here..."><?= $comment->getComment(); ?></textarea>
+                </div>
+            <?php } ?>
         <?php } ?>
-    <?php } ?>
+    </div>
     <button type="submit">submit post</button>
 </form>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>

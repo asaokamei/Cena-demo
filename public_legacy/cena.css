@@ -1,0 +1,72 @@
+body {
+    font-size: 16px;
+    width: 600px;
+    margin: 0 auto 0 auto;
+    padding: 0;
+}
+header article footer {
+    width: 600px;
+    padding: 10px;
+}
+header {
+    background-color: #f0f0f0;
+}
+article {
+    
+}
+footer {
+    margin-top: 20px;
+    border-top: 1px solid gray;
+}
+/*
+ * header style. 
+ */
+header span.title {
+    font-size: 2em;
+}
+
+/* top navigation style */
+nav ul {
+    float: right;
+    font-size: 0.9em;
+}
+nav ul li {
+    float: left;
+    width: 5em;
+    padding: 2px 1em 2px 4px;
+    margin: 0 5px 0 5px;
+    list-style: none;
+    border-left: 3px solid darkgreen;
+    background-color: #e0e0e0;
+}
+nav ul a:link {
+    color: gray;
+    text-decoration: none;
+}
+/*
+ * post and comment style
+ */
+div.post h1 {
+    border-left: 6px solid darkgreen;
+    background-color: #f0f0f0;
+    padding-left: 0.5em;
+    color: darkgreen;
+}
+div.comments {
+    width: 400px;
+}
+div.comments h2 {
+    border-left: 4px solid darkgreen;
+    background-color: #f0f0f0;
+    padding-left: 0.5em;
+    color: darkgreen;
+}
+button.editPost {
+    float: right;
+}
+input, textarea {
+    width: 100%;
+    border: 1px solid #cccccc;
+    padding: 5px;
+    font-size: 0.9em;
+}
