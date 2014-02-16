@@ -16,7 +16,6 @@ if( $id ) {                  // edit an existing posting.
 
 $post = $posting->getPost();
 $comments = $posting->getComments();
-$newComment = $posting->getNewComment();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -33,6 +32,7 @@ $newComment = $posting->getNewComment();
         </dl>
         <button type="submit">submit post</button>
     </div>
+    <?php if( count( $comments ) > 0 ) { ?>
     <div class="comments">
         <h2>comments...</h2>
         <?php
@@ -53,5 +53,6 @@ $newComment = $posting->getNewComment();
         <?php } ?>
     </div>
     <button type="submit">submit post</button>
+    <?php } ?>
 </form>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>
