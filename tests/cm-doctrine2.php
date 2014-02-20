@@ -1,26 +1,13 @@
 <?php
-use Cena\Cena\CenaManager;
-use Cena\Cena\Utils\ClassMap;
-use Cena\Cena\Utils\Collection;
-use Cena\Cena\Utils\Composition;
-use Cena\Doctrine2\EmaDoctrine2;
-use Doctrine\ORM\EntityManager;
+use Cena\Cena\Factory as CenaFactory;
+use Cena\Doctrine2\Factory as Dc2Factory;
 
 /*
  * create cm (CenaManager) for doctrine2 ema. 
  */
 
-/** @var EntityManager $em */
-$em = include( __DIR__ . '/em-doctrine2.php' );
-
-$ema = new EmaDoctrine2();
-$ema->setEntityManager( $em );
-
-$cm = new CenaManager(
-    new Composition(),
-    new Collection(),
-    new ClassMap()
-);
-$cm->setEntityManager( $ema );
+$em  = include( __DIR__ . '/em-doctrine2.php' );
+$ema = Dc2Factory::ema( $em );
+$cm  = CenaFactory::cm( $ema );
 
 return $cm;

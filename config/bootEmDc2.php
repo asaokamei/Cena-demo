@@ -1,6 +1,5 @@
 <?php
-use Doctrine\ORM\Tools\Setup;
-use Doctrine\ORM\EntityManager;
+use Cena\Doctrine2\Factory;
 
 /*
  * boot EntityManager for Doctrine2.
@@ -12,9 +11,6 @@ require_once( dirname(__DIR__) . '/autoload.php' );
 $paths = array(
     dirname(__DIR__) ."/src/Demo/Models"
 );
-$isDevMode = false;
-
 $dbParams = include( __DIR__ . '/dbParam.php' );
 
-$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-return $entityManager = EntityManager::create($dbParams, $config);
+return Factory::em($dbParams, $paths);
