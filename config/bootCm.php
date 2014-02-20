@@ -1,8 +1,5 @@
 <?php
-use Cena\Cena\CenaManager;
-use Cena\Cena\Utils\ClassMap;
-use Cena\Cena\Utils\Collection;
-use Cena\Cena\Utils\Composition;
+use Cena\Cena\Factory;
 use Cena\Doctrine2\EmaDoctrine2;
 use Doctrine\ORM\EntityManager;
 
@@ -16,12 +13,7 @@ $em = include( __DIR__ . '/bootEmDc2.php' );
 $ema = new EmaDoctrine2();
 $ema->setEntityManager( $em );
 
-$cm = new CenaManager(
-    new Composition(),
-    new Collection(),
-    new ClassMap()
-);
-$cm->setEntityManager( $ema );
+$cm = Factory::cm( $ema );
 
 $cm->setClass( 'Demo\Models\Post' );
 $cm->setClass( 'Demo\Models\Comment' );
