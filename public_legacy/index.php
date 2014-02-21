@@ -1,4 +1,5 @@
 <?php
+use Cena\Cena\Utils\HtmlForms;
 use Demo\Models\Post;
 use Doctrine\ORM\EntityManager;
 
@@ -8,7 +9,7 @@ $em = include( dirname( __DIR__ ) . '/config/bootEmDc2.php' );
 $query = $em->createQuery( 'SELECT p FROM Demo\Models\Post p' );
 /** @var Post[] $posts */
 $posts = $query->getResult();
-
+$form  = \Cena\Cena\Factory::form('dummy');
 //var_dump( $posts );
 
 ?>
@@ -42,10 +43,12 @@ $posts = $query->getResult();
 <ul>
     <?php
     foreach ( $posts as $post ) {
+        /** @var Post|HtmlForms $form */
+        $form->setEntity( $post );
         ?>
         <li>
-            <span class="date" >[<?= $post->getCreatedAt()->format('Y.m.d'); ?>]</span><br/>
-            <a href="post.php?id=<?= $post->getPostId(); ?>" class="title"><?= $post->getTitle(); ?></a>
+            <span class="date" >[<?= $form->getCreatedAt()->format('Y.m.d'); ?>]</span><br/>
+            <a href="post.php?id=<?= $form->getPostId(); ?>" class="title"><?= $form->getTitle(); ?></a>
         </li>
     <?php } ?>
 </ul>
