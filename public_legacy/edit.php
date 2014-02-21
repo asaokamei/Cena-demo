@@ -2,6 +2,7 @@
 
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
+use Cena\Cena\Factory;
 
 $cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
 $process = new \Cena\Cena\Process( $cm );
@@ -17,19 +18,21 @@ else { // form for a new posting.
 
 $post = $posting->getPost();
 $comments = $posting->getComments();
+$form = Factory::form();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
     <div class="post">
-        <h1>edit: <?= $post->getTitle(); ?></h1>
+        <?php $form->setEntity( $post ); ?>
+        <h1>edit: <?= $form['title']; ?></h1>
         <dl>
             <dt>Title:</dt>
-            <dd><input type="text" name="<?= $cm->formBase( $post ) ?>[prop][title]"
-                       placeholder="title" value="<?= $post->getTitle(); ?>"/></dd>
+            <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]"
+                       placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Content:</dt>
-            <dd><textarea type="text" name="<?= $cm->formBase( $post ) ?>[prop][content]" rows="10"
-                          placeholder="content here..."><?= $post->getContent(); ?></textarea></dd>
+            <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10"
+                          placeholder="content here..."><?= $form['content']; ?></textarea></dd>
         </dl>
         <button type="submit">submit post</button>
     </div>
@@ -40,15 +43,17 @@ $comments = $posting->getComments();
             /*
              * list all comments. 
              */
+            $post_cena_id = $form->getCenaId();
             foreach ( $comments as $comment ) {
+                $form->setEntity( $comment );
                 ?>
                 <hr>
                 <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
                     <div class="comment">
-                        <input type="hidden" name="<?= $cm->formBase( $comment ) ?>[link][post]"
-                               value="<?= $cm->cenaId( $post ); ?>">
-                        <textarea type="text" name="<?= $cm->formBase( $comment ) ?>[prop][comment]" rows="4"
-                                  placeholder="comment here..."><?= $comment->getComment(); ?></textarea>
+                        <input type="hidden" name="<?= $form->getFormName() ?>[link][post]"
+                               value="<?= $post_cena_id ?>">
+                        <textarea type="text" name="<?= $form->getFormName() ?>[prop][comment]" rows="4"
+                                  placeholder="comment here..."><?= $form['comment']; ?></textarea>
                     </div>
                 <?php } ?>
             <?php } ?>

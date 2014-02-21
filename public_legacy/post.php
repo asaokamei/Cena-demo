@@ -2,6 +2,7 @@
 
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
+use Cena\Cena\Factory;
 
 $cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
 $process = new \Cena\Cena\Process( $cm );
@@ -13,13 +14,15 @@ $posting->onGet( $id );
 $post = $posting->getPost();
 $comments = $posting->getComments();
 $newComment = $posting->getNewComment();
+$form = Factory::form();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <style>
 </style>
 <div class="post">
-    <h1><span class="date">[<?= $post->getCreatedAt()->format( 'Y.m.d' ); ?>]</span><?= $post->getTitle(); ?></h1>
+    <?php $form->setEntity( $post ); ?>
+    <h1><span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span><?= $form['title']; ?></h1>
     <div style="clear: both" ></div>
 </div><div class="content">
     <span><?= $post->getContentHtml(); ?></span>
@@ -37,10 +40,12 @@ $newComment = $posting->getNewComment();
     foreach ( $comments as $comment ) {
         ?>
         <hr>
-        <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
+        <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) {
+            $form->setEntity( $comment );
+            ?>
             <div class="comment">
-                <span class="date">[<?= $comment->getCreatedAt()->format( 'Y.m.d' ); ?>]</span>
-                <span class="comment"><?= $comment->getComment(); ?></span>
+                <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
+                <span class="comment"><?= $form['comment']; ?></span>
             </div>
         <?php }
         // for adding a new comment. 
@@ -48,7 +53,7 @@ $newComment = $posting->getNewComment();
             <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
                 <div class="comment">
                     <input type="hidden" name="<?= $cm->formBase( $newComment )?>[link][post]" value="<?= $cm->cenaId($post); ?>">
-                    <textarea type="text" name="<?= $cm->formBase( $newComment )?>[prop][comment]" placeholder="comment here..."></textarea>
+                    <textarea name="<?= $cm->formBase( $newComment )?>[prop][comment]" placeholder="comment here..."></textarea>
                 </div>
                 <button type="submit">add comment</button>
             </form>
