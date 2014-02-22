@@ -36,7 +36,7 @@ $form = Factory::form();
             <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
         </dl>
-        <button type="submit">submit post</button>
+        <button type="submit" class="btn btn-primary">submit post</button>
     </div>
     
     <?php if ( count( $comments ) > 0 ) { ?>
@@ -63,7 +63,7 @@ $form = Factory::form();
         </div>
         <br/>
         <div class="post col-md-12">
-            <button type="submit">submit post</button>
+            <button type="submit" class="btn btn-primary">submit post</button>
         </div>
     <?php } ?>
     

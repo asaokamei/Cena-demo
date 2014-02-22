@@ -24,11 +24,11 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar">xxxx</span>
-                <span class="icon-bar">yyyy</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Cena-demo</a>
+            <a class="navbar-brand" href="index.php">Cena-demo legacy version</a>
         </div>
         <div class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">

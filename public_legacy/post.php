@@ -31,7 +31,7 @@ $form = Factory::form();
     <div class="content">
         <span><?= $post->getContentHtml(); ?></span>
     </div>
-    <button class="editPost" onclick="location.href='edit.php?id=<?= $post->getPostId(); ?>'" >edit this post</button>
+    <button class="btn btn-primary" onclick="location.href='edit.php?id=<?= $post->getPostId(); ?>'" >edit this post</button>
     <div style="clear: both" ></div>
 </div>
 
@@ -58,7 +58,7 @@ $form = Factory::form();
         <?php $form->setEntity( $newComment ); ?>
         <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
         <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..."></textarea>
-        <button type="submit">add comment</button>
+        <button type="submit" class="btn btn-info btn-sm">add comment</button>
     </form>
 </div>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>
