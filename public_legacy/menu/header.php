@@ -30,10 +30,10 @@
             </button>
             <a class="navbar-brand" href="#">Cena-demo</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="index.php">Home</a></li>
-                <li><a href="edit.php">new post</a></li>
+                <li><a href="edit.php">New Post</a></li>
                 <li><a href="#">About</a></li>
             </ul>
         </div><!--/.nav-collapse -->
