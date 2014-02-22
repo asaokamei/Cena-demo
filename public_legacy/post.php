@@ -22,18 +22,20 @@ $form = Factory::form();
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <style>
 </style>
-<div class="post">
+
+<div class="post col-md-12">
     <?php $form->setEntity( $post ); ?>
-    <h1><span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span><?= $form['title']; ?></h1>
+    <h1><?= $form['title']; ?></h1>
+    <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
     <div style="clear: both" ></div>
-</div><div class="content">
-    <span><?= $post->getContentHtml(); ?></span>
-</div>
-<div>
+    <div class="content">
+        <span><?= $post->getContentHtml(); ?></span>
+    </div>
     <button class="editPost" onclick="location.href='edit.php?id=<?= $post->getPostId(); ?>'" >edit this post</button>
     <div style="clear: both" ></div>
 </div>
-<div class="comments">
+
+<div class="comments col-md-8">
     <h2>comments...</h2>
     <?php
     /*
@@ -54,10 +56,8 @@ $form = Factory::form();
     <!-- show a form to add a new comment -->
     <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
         <?php $form->setEntity( $newComment ); ?>
-        <div class="comment">
-            <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
-            <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..."></textarea>
-        </div>
+        <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
+        <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..."></textarea>
         <button type="submit">add comment</button>
     </form>
 </div>

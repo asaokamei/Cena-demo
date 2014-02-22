@@ -3,57 +3,25 @@
 } 
 body {
     font-size: 16px;
-    width: 600px;
-    margin: 0 auto 0 auto;
-    padding: 0;
-}
-header article footer {
-    width: 600px;
-    padding: 10px;
-}
-header {
-    background-color: #f0f0f0;
-}
-article {
-    
+    padding: 60px 0 0 0;
 }
 footer {
     margin-top: 20px;
+    padding-top: 10px;
     border-top: 1px solid gray;
 }
 /*
  * header style. 
  */
-header span.title {
-    font-size: 2em;
-}
 
-/* top navigation style */
-nav ul {
-    float: right;
-    font-size: 0.9em;
-}
-nav ul li {
-    float: left;
-    width: 8em;
-    padding: 2px 1em 2px 4px;
-    margin: 0 5px 0 5px;
-    list-style: none;
-    border-left: 3px solid darkgreen;
-    background-color: #e0e0e0;
-}
-nav ul a:link {
-    color: gray;
-    text-decoration: none;
-}
+
 /*
- * post and comment style
+ * post style
  */
 div.post h1 {
-    border-left: 6px solid darkgreen;
-    background-color: #f0f0f0;
-    padding-left: 0.5em;
-    color: darkgreen;
+    border-left: 12px solid lightblue;
+    margin-left: -16px;
+    padding-left: 4px;
 }
 div.post span.date {
     color: #666666;
@@ -62,17 +30,21 @@ div.post span.date {
     display: block;
 }
 
+/*
+ * comment style
+ */
 div.comments {
-    width: 400px;
+    margin-top: 10px;
+    padding: 0 20px 20px 20px;
+    border: 4px solid #e0e0e0;
+    border-radius: 5px;
 }
 div.comments h2 {
-    border-left: 4px solid darkgreen;
-    background-color: #f0f0f0;
-    padding-left: 0.5em;
-    color: darkgreen;
+    border-left: 8px solid lightblue;
+    margin-left: -12px;
+    padding-left: 4px;
 }
 button.editPost {
-    float: right;
 }
 input, textarea {
     width: 100%;
@@ -80,3 +52,10 @@ input, textarea {
     padding: 5px;
     font-size: 0.9em;
 }
+div.comments span.date {
+    color: #666666;
+    font-size: 12px;
+    font-weight: normal;
+    display: block;
+}
+

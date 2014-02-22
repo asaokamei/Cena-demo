@@ -1,6 +1,8 @@
-</article>
+</div>
+</div>
 <footer>
-    this is footer...
+    <p>&copy; WorkSpot.JP 2014</p>
 </footer>
+</div>
 </body>
 </html>

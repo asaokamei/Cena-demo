@@ -23,9 +23,11 @@ $form = Factory::form();
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
-    <div class="post">
+    
+    <div class="post col-md-12">
         <?php $form->setEntity( $post ); ?>
         <h1>edit: <?= $form['title']; ?></h1>
+        <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title:</dt>
             <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]"
@@ -36,8 +38,9 @@ $form = Factory::form();
         </dl>
         <button type="submit">submit post</button>
     </div>
+    
     <?php if ( count( $comments ) > 0 ) { ?>
-        <div class="comments">
+        <div class="comments col-md-8">
             <h2>comments...</h2>
             <?php
             /*
@@ -57,8 +60,9 @@ $form = Factory::form();
                     </div>
                 <?php } ?>
             <?php } ?>
+            <button type="submit">submit post</button>
         </div>
-        <button type="submit">submit post</button>
     <?php } ?>
+    
 </form>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>
