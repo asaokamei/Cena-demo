@@ -60,6 +60,9 @@ $form = Factory::form();
                     </div>
                 <?php } ?>
             <?php } ?>
+        </div>
+        <br/>
+        <div class="post col-md-12">
             <button type="submit">submit post</button>
         </div>
     <?php } ?>

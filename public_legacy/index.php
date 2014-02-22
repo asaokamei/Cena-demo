@@ -14,8 +14,16 @@ $form  = \Cena\Cena\Factory::form('dummy');
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>
+<div class="jumbotron">
+    <div class="container">
+        <h1>This is Cena-demo!</h1>
+        <p>This is a demo blog for Cena technology using Doctrine2 as 
+            a base ORM with legacy PHP style (i.e. scripts per page). 
+            Try edit one of the posts to see how Cena works. </p>
+        <p><a href="https://github.com/asaokamei/Cena-demo" class="btn btn-primary btn-lg" role="button" target="_blank">See it on the github »</a></p>
+    </div>
+</div>
 <div class="post col-md-12">
-    <h1>Post Lists</h1>
 <?php
 foreach ( $posts as $post ) {
     /** @var Post|HtmlForms $form */
