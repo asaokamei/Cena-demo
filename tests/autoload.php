@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = include( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
-$loader->addPsr4( 'CenaDemo\\', __DIR__ );
+$loader->addPsr4( 'CenaDemo\\', __DIR__ . '/CenaDemo/' );
 $loader->register();
 
 // Create a simple "default" Doctrine ORM configuration for Annotations

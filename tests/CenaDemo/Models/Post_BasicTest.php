@@ -13,7 +13,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
      */
     public $em;
     
-    public $postClass = 'Demo\Models\Post';
+    public $postClass = 'CenaDemo\Entity\Post';
 
     static function setUpBeforeClass()
     {
@@ -21,8 +21,8 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
         $em = include( __DIR__ . '/../../em-doctrine2.php' );
         $tool = new SchemaTool( $em );
         $classes = array(
-            $em->getClassMetadata( 'Demo\Models\Post' ),
-            $em->getClassMetadata( 'Demo\Models\Comment' ),
+            $em->getClassMetadata( 'CenaDemo\Entity\Post' ),
+            $em->getClassMetadata( 'CenaDemo\Entity\Comment' ),
         );
         $tool->dropSchema( $classes );
         $tool->createSchema( $classes );
@@ -63,7 +63,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
     {
         $post = new $this->postClass;
         $this->assertEquals( 'Doctrine\ORM\EntityManager', get_class( $this->em ) );
-        $this->assertEquals( 'Demo\Models\Post', get_class( $post ) );
+        $this->assertEquals( 'CenaDemo\Entity\Post', get_class( $post ) );
     }
 
     /**
