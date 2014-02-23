@@ -17,7 +17,7 @@ class CommentDto
 
     /**
      * @var Post
-     * @ManyToOne( targetEntity="Demo\Models\Post", inversedBy="comments" )
+     * @ManyToOne( targetEntity="CenaDemo\Entity\Post", inversedBy="comments" )
      * @JoinColumn( name="post_id", referencedColumnName="post_id", onDelete="CASCADE" )
      */
     protected $post;

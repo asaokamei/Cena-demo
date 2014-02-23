@@ -41,7 +41,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
      */
     function makeNewPost()
     {
-        $post    = new \Demo\Models\Post();
+        $post    = new \CenaDemo\Entity\Post();
         $content = 'content:'.md5(uniqid());
         $title   = 'title:'.md5(uniqid() );
         $post->setContent( $content );
@@ -51,7 +51,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
     
     function makeNewComment( $post=null )
     {
-        $comment = new \Demo\Models\Comment();
+        $comment = new \CenaDemo\Entity\Comment();
         $comment->setComment( 'comment:'.md5(uniqid()) );
         if( $post ) {
             $comment->setPost( $post );
@@ -78,7 +78,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
         $this->em->clear();
         $id = $post->getPostId();
         /** @var Post $post2 */
-        $post2 = $this->em->find( 'Demo\Models\Post', $id );
+        $post2 = $this->em->find( 'CenaDemo\Entity\Post', $id );
 
         $this->assertNotEquals( $post, $post2 );
         $this->assertEquals( $post->getContent(), $post2->getContent() );
@@ -109,7 +109,7 @@ class Post_BasicTest extends \PHPUnit_Framework_TestCase
         $this->em->clear();
         $id = $post->getPostId();
         /** @var Post $post2 */
-        $post2 = $this->em->find( 'Demo\Models\Post', $id );
+        $post2 = $this->em->find( 'CenaDemo\Entity\Post', $id );
 
         // basic test
         $this->assertNotEquals( $post, $post2 );

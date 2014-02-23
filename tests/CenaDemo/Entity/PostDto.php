@@ -49,7 +49,7 @@ class PostDto
 
     /**
      * @var
-     * @OneToMany( targetEntity="Demo\Models\Comment", mappedBy="post" )
+     * @OneToMany( targetEntity="CenaDemo\Entity\Comment", mappedBy="post" )
      * @JoinColumn( name="comment_id", referencedColumnName="comment_id" )
      */
     protected $comments;
