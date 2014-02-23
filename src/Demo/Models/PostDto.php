@@ -39,6 +39,12 @@ class PostDto
      * @var \DateTime
      * @Column(type="datetime")
      */
+    protected $publishAt;
+
+    /**
+     * @var \DateTime
+     * @Column(type="datetime")
+     */
     protected $createdAt;
 
     /**
@@ -56,6 +62,7 @@ class PostDto
 
     public function __construct()
     {
+        $this->publishAt = new \DateTime('now');
         $this->comments = new ArrayCollection();
     }
 
@@ -153,5 +160,24 @@ class PostDto
     public function setStatus( $status )
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublishAt()
+    {
+        return $this->publishAt;
+    }
+
+    /**
+     * @param \DateTime $publishAt
+     */
+    public function setPublishAt( $publishAt )
+    {
+        if( is_string( $publishAt ) ) {
+            $publishAt = new \DateTime( $publishAt );
+        }
+        $this->publishAt = $publishAt;
     }
 }

@@ -32,6 +32,9 @@ $form = Factory::form();
             <dt>Title:</dt>
             <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
+            <dt>Publish At:</dt>
+            <dd><input type="datetime" name="<?= $form->getFormName() ?>[prop][publishAt]" 
+                       placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d H:i:s') ?>" ></dd>
             <dt>Content:</dt>
             <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>

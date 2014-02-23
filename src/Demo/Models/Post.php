@@ -6,6 +6,7 @@ use Michelf\MarkdownExtra;
 /**
  * Class Post
  * @package Demo\Models
+ *          
  *
  * @Entity
  * @HasLifecycleCallbacks

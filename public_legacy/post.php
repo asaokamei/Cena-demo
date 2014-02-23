@@ -26,7 +26,7 @@ $form = Factory::form();
 <div class="post col-md-12">
     <?php $form->setEntity( $post ); ?>
     <h1><?= $form['title']; ?></h1>
-    <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
+    <span class="date">[<?= $form->get( 'publishAt' )->format( 'Y.m.d' ); ?>]</span>
     <div style="clear: both" ></div>
     <div class="content">
         <span><?= $post->getContentHtml(); ?></span>

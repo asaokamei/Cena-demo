@@ -31,7 +31,7 @@ foreach ( $posts as $post ) {
     ?>
     <div class="col-md-4">
         <h2><a href="post.php?id=<?= $form->getPostId(); ?>" class="title"><?= $form->getTitle(); ?></a></h2>
-        <span class="date" >[<?= $form->getCreatedAt()->format('Y.m.d'); ?>]</span><br/>
+        <span class="date" >[<?= $form->getPublishAt()->format('Y.m.d'); ?>]</span><br/>
         <span><?= mb_substr( $form->getContent(), 0, 100 ) ?></span>
     </div>
 <?php } ?>
