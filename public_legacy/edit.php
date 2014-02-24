@@ -3,6 +3,7 @@
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
 use Cena\Cena\Factory;
+use Demo\Models\Post;
 
 $cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
 $process = new \Cena\Cena\Process( $cm );
@@ -32,6 +33,18 @@ $form = Factory::form();
             <dt>Title:</dt>
             <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
+            <dt>Status</dt>
+            <dd>
+                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                        <?= $form->isChecked('status', Post::STATUS_PREVIEW) ?>
+                              placeholder="status" value="<?= Post::STATUS_PREVIEW ?>" >Preview</label>
+                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                        <?= $form->isChecked('status', Post::STATUS_PUBLIC) ?>
+                              placeholder="status" value="<?= Post::STATUS_PUBLIC?>" >Public</label>
+                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                        <?= $form->isChecked('status', Post::STATUS_HIDE) ?>
+                              placeholder="status" value="<?= Post::STATUS_HIDE ?>" >Hide this</label>
+            </dd>
             <dt>Publish At:</dt>
             <dd><input type="datetime" name="<?= $form->getFormName() ?>[prop][publishAt]" 
                        placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d H:i:s') ?>" ></dd>
