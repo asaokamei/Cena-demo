@@ -57,7 +57,7 @@ $form = Factory::form();
     <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
         <?php $form->setEntity( $newComment ); ?>
         <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
-        <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..."></textarea>
+        <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
         <button type="submit" class="btn btn-info btn-sm">add comment</button>
     </form>
 </div>

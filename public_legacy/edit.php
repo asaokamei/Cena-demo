@@ -31,7 +31,7 @@ $form = Factory::form();
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title:</dt>
-            <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]"
+            <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]" class="form-control"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Status</dt>
             <dd>
@@ -46,10 +46,11 @@ $form = Factory::form();
                               placeholder="status" value="<?= Post::STATUS_HIDE ?>" >Hide this</label>
             </dd>
             <dt>Publish At:</dt>
-            <dd><input type="datetime" name="<?= $form->getFormName() ?>[prop][publishAt]" 
-                       placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d H:i:s') ?>" ></dd>
+            <dd><input type="datetime-local" name="<?= $form->getFormName() ?>[prop][publishAt]"
+                       class="form-control" style="width: 250px"
+                       placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d\TH:i:s') ?>" ></dd>
             <dt>Content:</dt>
-            <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10"
+            <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10" class="form-control"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
         </dl>
         <button type="submit" class="btn btn-primary">submit post</button>
@@ -69,9 +70,9 @@ $form = Factory::form();
                 <hr>
                 <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
                     <div class="comment">
-                        <input type="hidden" name="<?= $form->getFormName() ?>[link][post]"
+                        <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
                                value="<?= $post_cena_id ?>">
-                        <textarea type="text" name="<?= $form->getFormName() ?>[prop][comment]" rows="4"
+                        <textarea type="text" name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
                                   placeholder="comment here..."><?= $form['comment']; ?></textarea>
                     </div>
                 <?php } ?>
