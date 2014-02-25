@@ -19,39 +19,54 @@ else { // form for a new posting.
 
 $post = $posting->getPost();
 $comments = $posting->getComments();
-$form = Factory::form();
+$posting->getTags();
+$newTag = $posting->getNewTag();
 
+// set up form helper...
+$form = Factory::form();
+$form->setEntity( $post );
+$post_form_name = $form->getFormName();
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
     
     <div class="post col-md-12">
-        <?php $form->setEntity( $post ); ?>
         <h1>edit: <?= $form['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title:</dt>
-            <dd><input type="text" name="<?= $form->getFormName() ?>[prop][title]" class="form-control"
+            <dd><input type="text" name="<?= $post_form_name ?>[prop][title]" class="form-control"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
-            <dt>Status</dt>
+            <dt>Status:</dt>
             <dd>
-                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
                         <?= $form->isChecked('status', Post::STATUS_PREVIEW) ?>
                               placeholder="status" value="<?= Post::STATUS_PREVIEW ?>" >Preview</label>
-                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
                         <?= $form->isChecked('status', Post::STATUS_PUBLIC) ?>
                               placeholder="status" value="<?= Post::STATUS_PUBLIC?>" >Public</label>
-                <label><input type="radio" name="<?= $form->getFormName() ?>[prop][status]"
+                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
                         <?= $form->isChecked('status', Post::STATUS_HIDE) ?>
                               placeholder="status" value="<?= Post::STATUS_HIDE ?>" >Hide this</label>
             </dd>
             <dt>Publish At:</dt>
-            <dd><input type="datetime-local" name="<?= $form->getFormName() ?>[prop][publishAt]"
+            <dd><input type="datetime-local" name="<?= $post_form_name ?>[prop][publishAt]"
                        class="form-control" style="width: 250px"
                        placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d\TH:i:s') ?>" ></dd>
             <dt>Content:</dt>
-            <dd><textarea type="text" name="<?= $form->getFormName() ?>[prop][content]" rows="10" class="form-control"
+            <dd><textarea type="text" name="<?= $post_form_name ?>[prop][content]" rows="10" class="form-control"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
+            <dt>Tags:</dt>
+            <dd>
+                <?php
+                $form->setEntity( $newTag );
+                ?>
+                <label>
+                    <input type="checkbox" name="<?= $post_form_name ?>[link][tags][]" value="<?= $form->getCenaId() ?>" />
+                    <input type="text" name="<?= $form->getFormName() ?>[prop][tag]" value=""
+                           placeholder="new tag..." class="form-control" width="200px">
+                </label>
+            </dd>
         </dl>
         <button type="submit" class="btn btn-primary">submit post</button>
     </div>

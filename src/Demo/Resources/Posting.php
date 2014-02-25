@@ -5,6 +5,8 @@ use Cena\Cena\Process;
 use Cena\Cena\CenaManager;
 use Demo\Models\Comment;
 use Demo\Models\Post;
+use Demo\Models\Tag;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Posting
@@ -146,13 +148,21 @@ class Posting
     }
 
     /**
-     * @return Comment[]
+     * @return Comment[]|ArrayCollection
      */
     public function getComments()
     {
         return $this->post->getComments();
     }
-    
+
+    /**
+     * @return Tag[]|ArrayCollection
+     */
+    public function getTags()
+    {
+        return $this->post->getTags();
+    }
+
     /**
      * @return Comment
      */
@@ -162,6 +172,16 @@ class Posting
         $comment->setPost( $this->post );
         $this->post->addComment( $comment );
         return $comment;
+    }
+
+    /**
+     * @return Tag
+     */
+    public function getNewTag()
+    {
+        $tag = new Tag();
+        $this->post->addTag( $tag );
+        return $tag;
     }
     // +----------------------------------------------------------------------+
 }
