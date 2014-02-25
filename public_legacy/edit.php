@@ -4,6 +4,7 @@
 use Cena\Cena\CenaManager;
 use Cena\Cena\Factory;
 use Demo\Models\Post;
+use Doctrine\ORM\EntityManager;
 
 $cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
 $process = new \Cena\Cena\Process( $cm );
@@ -19,10 +20,26 @@ else { // form for a new posting.
 
 $post = $posting->getPost();
 $comments = $posting->getComments();
+
+/*
+ * preparing tags.
+ */
+
+// get associated tags, and a new tag
 $posting->getTags();
 $newTag = $posting->getNewTag();
+$postTag = $posting->getTags();
 
-// set up form helper...
+// get all the tags.
+/** @var EntityManager $em */
+$em = $cm->getEntityManager()->em();
+$qr = $em->createQuery( "SELECT p FROM Demo\Models\Tag p" );
+$tags = $qr->getResult();
+
+/*
+ * set up form helper...
+ */
+
 $form = Factory::form();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
@@ -59,6 +76,17 @@ $post_form_name = $form->getFormName();
             <dt>Tags:</dt>
             <dd>
                 <?php
+                foreach($tags as $t ) {
+                    $form->setEntity( $t );
+                    $checked = $postTag->exists( function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
+                    ?>
+                    <label>
+                        <input type="checkbox" name="<?= $post_form_name ?>[link][tags][]"
+                               value="<?= $form->getCenaId() ?>" <?= $checked ?> />
+                        <?= $form['tag'] ?>
+                    </label>
+                <?php
+                }
                 $form->setEntity( $newTag );
                 ?>
                 <label>

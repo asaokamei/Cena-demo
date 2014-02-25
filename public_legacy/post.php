@@ -16,6 +16,13 @@ $posting->onGet( $id );
 $post = $posting->getPost();
 $comments = $posting->getComments();
 $newComment = $posting->getNewComment();
+
+// prepare tags
+$tags = $posting->getTags();
+$tag_list = array();
+foreach( $tags as $t ) {
+    $tag_list[] = $t->getTag();
+}
 $form = Factory::form();
 
 ?>
@@ -26,7 +33,7 @@ $form = Factory::form();
 <div class="post col-md-12">
     <?php $form->setEntity( $post ); ?>
     <h1><?= $form['title']; ?></h1>
-    <span class="date">[<?= $form->get( 'publishAt' )->format( 'Y.m.d' ); ?>]</span>
+    <span class="date">[<?= $form->get( 'publishAt' )->format( 'Y.m.d' ); ?>] [<?= implode( ', ', $tag_list ); ?>]</span>
     <div style="clear: both" ></div>
     <div class="content">
         <span><?= $post->getContentHtml(); ?></span>
