@@ -12,5 +12,6 @@ $cm  = CenaFactory::cm( $ema );
 
 $cm->setClass( 'Demo\Models\Post' );
 $cm->setClass( 'Demo\Models\Comment' );
+$cm->setClass( 'Demo\Models\Tag' );
 
 return $cm;
