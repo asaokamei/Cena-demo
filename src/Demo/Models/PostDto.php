@@ -1,6 +1,7 @@
 <?php
 namespace Demo\Models;
 
+use Demo\Models\Tag;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -60,10 +61,21 @@ class PostDto
      */
     protected $comments;
 
+    /**
+     * @var Tag[]|ArrayCollection
+     * @ManyToMany(targetEntity="Tag")
+     * @JoinTable(name="post_tags",
+     *      joinColumns={@joinColumn(name="post_id", referencedColumnName="post_id")},
+     *      inverseJoinColumns={@JoinColumn(name="tag_id", referencedColumnName="tag_id")}
+     * )
+     */
+    protected $tags;
+
     public function __construct()
     {
         $this->publishAt = new \DateTime('now');
         $this->comments = new ArrayCollection();
+        $this->tags     = new ArrayCollection();
     }
 
     /**
@@ -179,5 +191,29 @@ class PostDto
             $publishAt = new \DateTime( $publishAt );
         }
         $this->publishAt = $publishAt;
+    }
+
+    /**
+     * @return Tag[]|ArrayCollection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag[]|ArrayCollection $tags
+     */
+    public function setTags( $tags )
+    {
+        $this->tags = new ArrayCollection( $tags );
+    }
+
+    /**
+     * @param Tag $tag
+     */
+    public function addTag( $tag )
+    {
+        $this->tags[] = $tag;
     }
 }
