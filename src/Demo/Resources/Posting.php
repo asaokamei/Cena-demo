@@ -104,7 +104,9 @@ class Posting
     public function onPut( $id )
     {
         $this->onGet( $id );
-        $this->process->setSource( $this->data );
+        $this->process->setSource( $this->data )
+            ->cleanNew( 'tag', 'tag' )
+            ->cleanNew( 'comment', 'comment' );
         $this->process->process();
         $this->cm->save();
         return $this;
@@ -118,7 +120,9 @@ class Posting
     public function onPost()
     {
         $this->onNew();
-        $this->process->setSource( $this->data );
+        $this->process->setSource( $this->data )
+            ->cleanNew( 'tag', 'tag' )
+            ->cleanNew( 'comment', 'comment' );
         $this->process->process();
         $this->cm->save();
         return $this;
