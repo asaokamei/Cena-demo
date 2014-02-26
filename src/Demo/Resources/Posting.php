@@ -104,6 +104,7 @@ class Posting
     public function onPut( $id )
     {
         $this->onGet( $id );
+        $this->post->setTags( array() ); // set tags empty. 
         $this->process->setSource( $this->data )
             ->cleanNew( 'tag', 'tag' )
             ->cleanNew( 'comment', 'comment' );

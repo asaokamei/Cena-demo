@@ -77,7 +77,6 @@ $post_cena_id = $form->getCenaId();
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
             <dt>Tags:</dt>
             <dd>
-                <input type="hidden" name="<?= $post_form_name ?>[link][tags][]" value="" />
                 <?php
                 foreach($tags as $t ) {
                     $form->setEntity( $t );
