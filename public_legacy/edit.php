@@ -43,6 +43,8 @@ $tags = $qr->getResult();
 $form = Factory::form();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
+$post_cena_id = $form->getCenaId();
+
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
@@ -106,7 +108,6 @@ $post_form_name = $form->getFormName();
             /*
              * list all comments. 
              */
-            $post_cena_id = $form->getCenaId();
             foreach ( $comments as $comment ) {
                 $form->setEntity( $comment );
                 ?>
