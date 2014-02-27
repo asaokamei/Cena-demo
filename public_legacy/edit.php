@@ -40,7 +40,7 @@ $tags = $qr->getResult();
  * set up form helper...
  */
 
-$form = Factory::form();
+$form = Factory::getHtmlForms();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
 $post_cena_id = $form->getCenaId();

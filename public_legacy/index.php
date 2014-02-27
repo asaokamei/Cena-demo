@@ -9,7 +9,7 @@ $em = include( dirname( __DIR__ ) . '/config/bootEmDc2.php' );
 $query = $em->createQuery( 'SELECT p FROM Demo\Models\Post p' );
 /** @var Post[] $posts */
 $posts = $query->getResult();
-$form  = \Cena\Cena\Factory::form('dummy');
+$form  = \Cena\Cena\Factory::getHtmlForms('dummy');
 //var_dump( $posts );
 
 ?>

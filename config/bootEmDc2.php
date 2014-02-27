@@ -13,4 +13,4 @@ $paths = array(
 );
 $dbParams = include( __DIR__ . '/dbParam.php' );
 
-return Factory::em($dbParams, $paths);
+return Factory::getEntityManager($dbParams, $paths);

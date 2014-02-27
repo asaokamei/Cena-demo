@@ -23,7 +23,7 @@ $tag_list = array();
 foreach( $tags as $t ) {
     $tag_list[] = $t->getTag();
 }
-$form = Factory::form();
+$form = Factory::getHtmlForms();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>

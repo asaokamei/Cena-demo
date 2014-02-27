@@ -7,4 +7,4 @@ $isDevMode = false;
 
 $dbParams = include( dirname( __DIR__ ) . '/config/dbParam.php' );
 
-return Factory::em($dbParams, $paths);
+return Factory::getEntityManager($dbParams, $paths);

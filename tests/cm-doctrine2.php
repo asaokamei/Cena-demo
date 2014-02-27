@@ -7,7 +7,7 @@ use Cena\Doctrine2\Factory as Dc2Factory;
  */
 
 $em  = include( __DIR__ . '/em-doctrine2.php' );
-$ema = Dc2Factory::ema( $em );
-$cm  = CenaFactory::cm( $ema );
+$ema = Dc2Factory::getEmaDoctrine2( $em );
+$cm  = CenaFactory::getCenaManager( $ema );
 
 return $cm;
