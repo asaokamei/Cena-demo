@@ -8,6 +8,6 @@ use Cena\Doctrine2\Factory as Dc2Factory;
 
 $em  = include( __DIR__ . '/em-doctrine2.php' );
 $ema = Dc2Factory::getEmaDoctrine2( $em );
-$cm  = CenaFactory::getCenaManager( $ema );
+$cm  = CenaFactory::buildCenaManager( $ema );
 
 return $cm;

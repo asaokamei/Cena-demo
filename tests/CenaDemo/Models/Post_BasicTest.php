@@ -1,8 +1,8 @@
 <?php
 namespace CenaDemo\Models;
 
-use Demo\Models\Comment;
-use Demo\Models\Post;
+use CenaDemo\Entity\Comment;
+use CenaDemo\Entity\Post;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 

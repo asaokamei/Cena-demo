@@ -7,7 +7,7 @@ namespace Demo\Models;
  *
  * @Entity
  * @HasLifecycleCallbacks
- * @Table(name="tag")
+ * @Table(name="test_tag")
  */
 class Tag
 {

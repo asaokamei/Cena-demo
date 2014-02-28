@@ -10,7 +10,7 @@ use Michelf\MarkdownExtra;
  *
  * @Entity
  * @HasLifecycleCallbacks
- * @Table(name="post")
+ * @Table(name="test_post")
  */
 class Post extends PostDto
 {

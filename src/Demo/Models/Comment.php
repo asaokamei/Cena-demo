@@ -7,7 +7,7 @@ namespace Demo\Models;
  *
  *
  * @Entity
- * @Table(name="comment")
+ * @Table(name="test_comment")
  * @HasLifecycleCallbacks
  */
 class Comment extends CommentDto

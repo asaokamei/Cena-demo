@@ -372,7 +372,9 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
                 'link' => [  'post' => 'post.0.1' ],
             ),
         );
-        $this->process->setSource( $post );
-        $this->assertEquals( $input, $this->process->getSource() );
+        $method = new \ReflectionMethod( 'Cena\Cena\Process', 'prepareSource' );
+        $method->setAccessible(true);
+        $cena =$method->invoke( $this->process, $post );
+        $this->assertEquals( $input, $cena );
     }
 }
