@@ -1,14 +1,11 @@
 <?php
 
-/** @var CenaManager $cm */
-use Cena\Cena\CenaManager;
-use Cena\Cena\Factory;
 use Cena\Cena\Utils\HtmlForms;
+use Demo\Factory as DemoFactory;
 use Demo\Models\Comment;
 
-$cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
-$process = new \Cena\Cena\Process( $cm );
-$posting = new \Demo\Resources\Posting( $cm, $process );
+include( dirname(__DIR__) . '/autoload.php' );
+$posting = DemoFactory::getPosting();
 
 $id = $_GET[ 'id' ];
 $posting->onGet( $id );
@@ -23,7 +20,7 @@ $tag_list = array();
 foreach( $tags as $t ) {
     $tag_list[] = $t->getTag();
 }
-$form = Factory::getHtmlForms();
+$form = DemoFactory::getHtmlForms();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -50,9 +47,9 @@ $form = Factory::getHtmlForms();
      */
     $post_cena_id = $form->getCenaId();
     foreach ( $comments as $comment ) {
-        if( !$cm->getEntityManager()->isRetrieved($comment) ) continue;
         /** @var Comment|HtmlForms $form */
         $form->setEntity( $comment );
+        if( !$form->isRetrieved() ) continue;
         ?>
         <div class="comment">
             <span class="date">[<?= $form->getCreatedAt()->format( 'Y.m.d' ); ?>]</span>
