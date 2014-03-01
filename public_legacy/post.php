@@ -5,6 +5,7 @@ use Demo\Factory as DemoFactory;
 use Demo\Models\Comment;
 
 include( dirname(__DIR__) . '/autoload.php' );
+
 $posting = DemoFactory::getPosting();
 
 $id = $_GET[ 'id' ];

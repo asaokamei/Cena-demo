@@ -3,12 +3,15 @@
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
 use Cena\Cena\Factory;
+use Cena\Cena\Utils\HtmlForms;
+use Demo\Factory as DemoFactory;
 use Demo\Models\Post;
 use Doctrine\ORM\EntityManager;
 
-$cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
-$process = new \Cena\Cena\Process( $cm );
-$posting = new \Demo\Resources\Posting( $cm, $process );
+include( dirname(__DIR__) . '/autoload.php' );
+
+$posting = DemoFactory::getPosting();
+$cm = DemoFactory::getCenaManager();
 
 $id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
 if ( $id ) { // edit an existing posting. 
@@ -40,6 +43,7 @@ $tags = $qr->getResult();
  * set up form helper...
  */
 
+/** @var HtmlForms|Post $form */
 $form = Factory::getHtmlForms();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
@@ -71,15 +75,16 @@ $post_cena_id = $form->getCenaId();
             <dt>Publish At:</dt>
             <dd><input type="datetime-local" name="<?= $post_form_name ?>[prop][publishAt]"
                        class="form-control" style="width: 250px"
-                       placeholder="publish date" value="<?= $form['publishAt']->format('Y-m-d\TH:i:s') ?>" ></dd>
+                       placeholder="publish date" value="<?= $form->get( 'publishAt' )->format('Y-m-d\TH:i:s') ?>" ></dd>
             <dt>Content:</dt>
-            <dd><textarea type="text" name="<?= $post_form_name ?>[prop][content]" rows="10" class="form-control"
+            <dd><textarea name="<?= $post_form_name ?>[prop][content]" rows="10" class="form-control"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
             <dt>Tags:</dt>
             <dd>
                 <?php
                 foreach($tags as $t ) {
                     $form->setEntity( $t );
+                    /** @noinspection PhpUnusedParameterInspection */
                     $checked = $postTag->exists( function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
                     ?>
                     <label>
@@ -116,7 +121,7 @@ $post_cena_id = $form->getCenaId();
                     <div class="comment">
                         <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
                                value="<?= $post_cena_id ?>">
-                        <textarea type="text" name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
+                        <textarea name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
                                   placeholder="comment here..."><?= $form['comment']; ?></textarea>
                     </div>
                 <?php } ?>

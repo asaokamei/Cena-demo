@@ -1,16 +1,15 @@
 <?php
 use Cena\Cena\Utils\HtmlForms;
+use Demo\Factory as DemoFactory;
 use Demo\Models\Post;
-use Doctrine\ORM\EntityManager;
 
-/** @var EntityManager $em */
+include( dirname(__DIR__) . '/autoload.php' );
 
-$em = include( dirname( __DIR__ ) . '/config/bootEmDc2.php' );
+$em = DemoFactory::getEntityManager();
 $query = $em->createQuery( 'SELECT p FROM Demo\Models\Post p' );
 /** @var Post[] $posts */
 $posts = $query->getResult();
-$form  = \Cena\Cena\Factory::getHtmlForms('dummy');
-//var_dump( $posts );
+$form  = DemoFactory::getHtmlForms();
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>

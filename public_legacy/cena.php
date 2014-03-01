@@ -2,10 +2,11 @@
 
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
+use Demo\Factory as DemoFactory;
 
-$cm = include( dirname( __DIR__ ) . '/config/bootCm.php' );
-$process = new \Cena\Cena\Process( $cm );
-$posting = new \Demo\Resources\Posting( $cm, $process );
+include( dirname(__DIR__) . '/autoload.php' );
+
+$posting = DemoFactory::getPosting();
 
 $id = isset( $_GET['id'] ) ? $_GET['id'] : '';
 $posting->with( $_POST );
