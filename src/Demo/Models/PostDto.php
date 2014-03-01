@@ -63,7 +63,7 @@ class PostDto
 
     /**
      * @var Tag[]|ArrayCollection
-     * @ManyToMany(targetEntity="Tag")
+     * @ManyToMany(targetEntity="Demo\Models\Tag")
      * @JoinTable(name="post_tags",
      *      joinColumns={@joinColumn(name="post_id", referencedColumnName="post_id")},
      *      inverseJoinColumns={@JoinColumn(name="tag_id", referencedColumnName="tag_id")}
