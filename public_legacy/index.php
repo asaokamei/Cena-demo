@@ -1,13 +1,13 @@
 <?php
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
-use Demo\Models\Post;
+use Demo\Models\PostList;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
 $em = DemoFactory::getEntityManager();
-$query = $em->createQuery( 'SELECT p FROM Demo\Models\Post p' );
-/** @var Post[] $posts */
+$query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
+/** @var PostList[] $posts */
 $posts = $query->getResult();
 $form  = DemoFactory::getHtmlForms();
 
@@ -25,12 +25,16 @@ $form  = DemoFactory::getHtmlForms();
 <div class="post col-md-12">
 <?php
 foreach ( $posts as $post ) {
-    /** @var Post|HtmlForms $form */
+    /** @var PostList|HtmlForms $form */
     $form->setEntity( $post );
     ?>
     <div class="col-md-4">
         <h2><a href="post.php?id=<?= $form->getPostId(); ?>" class="title"><?= $form->getTitle(); ?></a></h2>
-        <span class="date" >[<?= $form->getPublishAt()->format('Y.m.d'); ?>]</span><br/>
+        <span class="date" >
+            [<?= $form->getPublishAt()->format('Y.m.d'); ?>]
+            [<?= $form->getTagsList() ?>]
+            [# of comments:<?= $form->getCountComments() ?>]
+        </span><br/>
         <span><?= mb_substr( $form->getContent(), 0, 100 ) ?></span>
     </div>
 <?php } ?>
