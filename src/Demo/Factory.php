@@ -2,12 +2,19 @@
 namespace Demo;
 
 use Cena\Cena\CenaManager;
+use Cena\Cena\Utils\HtmlForms;
 use Cena\Doctrine2\Factory as Dc2Factory;
 use Cena\Cena\Factory as CenaFactory;
+use Demo\Resources\Posting;
 use Doctrine\ORM\EntityManager;
 
 class Factory
 {
+    /**
+     * @var Posting
+     */
+    public static $posting;
+    
     /**
      * @var CenaManager
      */
@@ -17,6 +24,37 @@ class Factory
      * @var EntityManager
      */
     public static $em;
+
+    /**
+     * @return Posting
+     */
+    public static function getPosting()
+    {
+        if( !self::$posting ) {
+            self::$posting = self::buildPosting();
+        }
+        return self::$posting;
+    }
+
+    /**
+     * @return Posting
+     */
+    public static function buildPosting()
+    {
+        $posting = new Posting(
+            self::getCenaManager(),
+            CenaFactory::getProcess()
+        );
+        return $posting;               
+    }
+
+    /**
+     * @return HtmlForms
+     */
+    public static function getHtmlForms()
+    {
+        return CenaFactory::getHtmlForms();
+    }
 
     /**
      * @return CenaManager
