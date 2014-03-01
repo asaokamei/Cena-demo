@@ -1,14 +1,14 @@
 <?php
 
+include( dirname(__DIR__).'/autoload.php' );
+
+$em = \Demo\Factory::getEntityManager();
+$tool = new \Doctrine\ORM\Tools\SchemaTool( $em );
+
 /*
  * creates tables.
+ * post, comment, and tag.
  */
-
-/** @var EntityManager $em */
-use Doctrine\ORM\EntityManager;
-
-$em = include( __DIR__ . '/bootEmDc2.php' );
-$tool = new \Doctrine\ORM\Tools\SchemaTool( $em );
 
 $classes = array(
     $em->getClassMetadata( 'Demo\Models\Post' ),
@@ -19,7 +19,8 @@ $tool->dropSchema( $classes );
 $tool->createSchema( $classes );
 
 /*
- * create view, post_view, for Post with comments count and concatenated tag. 
+ * create view, post_view, 
+ * for post with comments count and concatenated tag. 
  */
 
 $dba = $em->getConnection();
