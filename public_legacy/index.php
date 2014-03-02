@@ -3,7 +3,21 @@ use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
 use Demo\Models\PostList;
 
-include( dirname(__DIR__) . '/autoload.php' );
+require_once( dirname(__DIR__) . '/autoload.php' );
+
+if( isset( $_GET['act'] ) ) {
+    
+    if( $_GET['act'] == 'sample' ) {
+        include( dirname(__DIR__).'/config/sample-db.php' );
+        header( "Location: index.php" );
+        exit;
+    }
+    if( $_GET['act'] == 'setup' ) {
+        include( dirname(__DIR__).'/config/setup-db.php' );
+        header( "Location: index.php" );
+        exit;
+    }
+}
 
 $em = DemoFactory::getEntityManager();
 $query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
@@ -23,6 +37,13 @@ $form  = DemoFactory::getHtmlForms();
     </div>
 </div>
 <div class="post col-md-12">
+    <div class="col-md-4" style="float: right;background-color: #f0f0f0; border: 2px solid #e0e0e0;">
+        <h2>utilities</h2>
+        <ul>
+            <li>to initialize database, click <a href="index.php?act=setup" >here</a>.</li>
+            <li>to add sample posts, click <a href="index.php?act=sample" >here</a>.</li>
+        </ul>
+    </div>
 <?php
 foreach ( $posts as $post ) {
     /** @var PostList|HtmlForms $form */
