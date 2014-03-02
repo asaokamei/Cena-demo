@@ -1,37 +1,45 @@
 <?php
 
+use Demo\Factory;
+use Doctrine\ORM\Tools\SchemaTool;
+
 include( dirname(__DIR__).'/autoload.php' );
 
-$em = \Demo\Factory::getEntityManager();
-$tool = new \Doctrine\ORM\Tools\SchemaTool( $em );
+call_user_func( function() {
 
-/*
- * creates tables.
- * post, comment, and tag.
- */
+    $em = Factory::getEntityManager();
+    $tool = new SchemaTool( $em );
 
-$classes = array(
-    $em->getClassMetadata( 'Demo\Models\Post' ),
-    $em->getClassMetadata( 'Demo\Models\Comment' ),
-    $em->getClassMetadata( 'Demo\Models\Tag' ),
-);
-$tool->dropSchema( $classes );
-$tool->createSchema( $classes );
+    /*
+     * creates tables.
+     * post, comment, and tag.
+     */
 
-/*
- * create view, post_view, 
- * for post with comments count and concatenated tag. 
- */
+    $classes = array(
+        $em->getClassMetadata( 'Demo\Models\Post' ),
+        $em->getClassMetadata( 'Demo\Models\Comment' ),
+        $em->getClassMetadata( 'Demo\Models\Tag' ),
+    );
+    $tool->dropSchema( $classes );
+    $tool->createSchema( $classes );
 
-$dba = $em->getConnection();
-$sql_view = "DROP VIEW IF EXISTS post_view;";
-$dba->exec( $sql_view );
+    /*
+     * create view, post_view, 
+     * for post with comments count and concatenated tag. 
+     */
 
-$sql_view = "
+    $dba = $em->getConnection();
+    $sql_view = "DROP VIEW IF EXISTS post_view;";
+    $dba->exec( $sql_view );
+
+    $sql_view = "
 CREATE VIEW post_view AS 
 SELECT *, 
   (SELECT COUNT(comment_id) FROM comment c WHERE c.post_id=p.post_id ) AS count_comments, 
   (SELECT GROUP_CONCAT( tag ORDER BY tag SEPARATOR ', ' ) FROM post_tags pt INNER JOIN tag t USING( tag_id ) WHERE pt.post_id=p.post_id  ) AS tags_list
 FROM post p
 ";
-$dba->exec( $sql_view );
+    $dba->exec( $sql_view );
+    
+});
+
