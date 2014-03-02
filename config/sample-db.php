@@ -17,15 +17,20 @@ call_user_func( function() {
     $input = array(
         'post.0.1'    => array(
             'prop' => [
-                'title'   => 'First Post',
-                'content' => 'This is the first post. please edit this content. ',
+                'title'   => 'About This Blog',
+                'content' => "This is the first post sample text to demonstrate Cena technology. \n\n".
+                    "##Markdown text\n".
+                    "this text uses markdown style, and converted to html. \n\n".
+                    "please edit this content. ",
             ],
             'link' => [ 'tags' => 'tag.0.1' ]
         ),
         'post.0.2'    => array(
             'prop' => [
-                'title'   => 'Second Post',
-                'content' => 'This is the second post. maybe try modify its tags? ',
+                'title'   => 'Comments and Tags',
+                'content' => "This post has two comments and two tags. \n\n".
+                    "##Cena make it easy\n\n".
+                    "Maybe add/modify/delete them to see how Cena works? ",
             ],
             'link' => [ 'tags' => [ 'tag.0.2', 'tag.0.3' ] ],
         ),

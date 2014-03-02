@@ -56,7 +56,8 @@ foreach ( $posts as $post ) {
             [<?= $form->getTagsList() ?>]
             [# of comments:<?= $form->getCountComments() ?>]
         </span><br/>
-        <span><?= mb_substr( $form->getContent(), 0, 100 ) ?></span>
+        <span><?= mb_substr( $form->getContent(), 0, 100 ) ?>... 
+            [<a href="post.php?id=<?= $form->getPostId(); ?>">read more</a>]</span>
     </div>
 <?php } ?>
 </div>
