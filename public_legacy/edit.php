@@ -114,17 +114,16 @@ $post_cena_id = $form->getCenaId();
              * list all comments. 
              */
             foreach ( $comments as $comment ) {
+                if ( !$cm->getEntityManager()->isRetrieved( $comment ) ) continue;
                 $form->setEntity( $comment );
                 ?>
                 <hr>
-                <?php if ( $cm->getEntityManager()->isRetrieved( $comment ) ) { ?>
-                    <div class="comment">
-                        <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
-                               value="<?= $post_cena_id ?>">
-                        <textarea name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
-                                  placeholder="comment here..."><?= $form['comment']; ?></textarea>
-                    </div>
-                <?php } ?>
+                <div class="comment">
+                    <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
+                           value="<?= $post_cena_id ?>">
+                    <textarea name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
+                              placeholder="comment here..."><?= $form['comment']; ?></textarea>
+                </div>
             <?php } ?>
         </div>
         <br/>
