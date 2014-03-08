@@ -119,6 +119,10 @@ $post_cena_id = $form->getCenaId();
                 ?>
                 <hr>
                 <div class="comment">
+                    <label>
+                        to delete, check this:<input type="checkbox" name="<?= $form->getFormName() ?>[del]"
+                                                     value="<?= $post_cena_id ?>">
+                    </label>
                     <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
                            value="<?= $post_cena_id ?>">
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
