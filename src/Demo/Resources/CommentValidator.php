@@ -1,5 +1,5 @@
 <?php
-namespace Demo\Models;
+namespace Demo\Resources;
 
 use Cena\Cena\Validation\ValidatorInterface;
 
