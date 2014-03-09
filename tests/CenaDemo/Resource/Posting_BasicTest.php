@@ -4,6 +4,7 @@ namespace CenaDemo\Resource;
 use Cena\Cena\CenaManager;
 use Cena\Cena\Process;
 use CenaDemo\Entity\Posting;
+use CenaDemo\Entity\CommentValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
@@ -42,6 +43,7 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->cm = include( __DIR__ . '/../../cm-doctrine2.php' );
         $this->cm->setClass( 'CenaDemo\Entity\Post' );
         $this->cm->setClass( 'CenaDemo\Entity\Comment' );
+        $this->cm->setValidator( 'CenaDemo\Entity\Comment', new CommentValidator() );
         $this->process = new Process( $this->cm );
         $this->post = $this->getNewPosting();
     }
