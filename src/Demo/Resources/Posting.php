@@ -99,18 +99,19 @@ class Posting
      * modify an existing post and save to db. 
      * 
      * @param int $id
-     * @return $this
+     * @return bool
      */
     public function onPut( $id )
     {
         $this->onGet( $id );
         $this->post->setTags( array() ); // set tags empty. 
         $this->process->setSource( $this->data )
-            ->cleanNew( 'tag', 'tag' )
-            ->cleanNew( 'comment', 'comment' );
-        $this->process->process();
-        $this->cm->save();
-        return $this;
+            ->cleanNew( 'tag', 'tag' );
+        if( $this->process->process() ) {
+            $this->cm->save();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -122,11 +123,12 @@ class Posting
     {
         $this->onNew();
         $this->process->setSource( $this->data )
-            ->cleanNew( 'tag', 'tag' )
-            ->cleanNew( 'comment', 'comment' );
-        $this->process->process();
-        $this->cm->save();
-        return $this;
+            ->cleanNew( 'tag', 'tag' );
+        if( $this->process->process() ) {
+            $this->cm->save();
+            return false;
+        }
+        return true;
     }
 
     /**
