@@ -7,6 +7,7 @@ use Cena\Doctrine2\Factory as Dc2Factory;
 use Cena\Cena\Factory as CenaFactory;
 use Demo\Resources\CommentValidator;
 use Demo\Resources\Posting;
+use Demo\Resources\PostValidator;
 use Doctrine\ORM\EntityManager;
 
 class Factory
@@ -81,7 +82,8 @@ class Factory
         $cm->setClass( 'Demo\Models\Post' );
         $cm->setClass( 'Demo\Models\Comment' );
         $cm->setClass( 'Demo\Models\Tag' );
-        
+
+        $cm->setValidator( 'Demo\Models\Post',    new PostValidator() );
         $cm->setValidator( 'Demo\Models\Comment', new CommentValidator() );
 
         return $cm;

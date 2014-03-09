@@ -16,9 +16,11 @@ $cm = DemoFactory::getCenaManager();
 $id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
 if ( $id ) { // edit an existing posting. 
     $posting->onGet( $id );
+    $pageTitle = 'Edit Post';
 }
 else { // form for a new posting. 
     $posting->onNew();
+    $pageTitle = 'New Post';
 }
 
 $post = $posting->getPost();
@@ -54,7 +56,7 @@ $post_cena_id = $form->getCenaId();
 <form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
     
     <div class="post col-md-12">
-        <h1>edit: <?= $form['title']; ?></h1>
+        <h1><?= $pageTitle; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title:</dt>
