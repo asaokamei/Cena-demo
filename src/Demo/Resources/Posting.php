@@ -71,11 +71,12 @@ class Posting
     public function onGet( $id )
     {
         if( !$id ) {
-            return $this->onNew();
+            throw new \RuntimeException( 'Post # not set' );
         }
         if( !$this->post ) {
-            $this->post = $this->cm->getEntity( 'Post', $id );
-            if( !$this->post ) {
+            try {
+                $this->post = $this->cm->getEntity( 'Post', $id );
+            } catch( \Exception $e ) {
                 throw new \RuntimeException( 'Cannot find Post #'.$id );
             }
         }
@@ -168,6 +169,19 @@ class Posting
     public function getTags()
     {
         return $this->post->getTags();
+    }
+
+    /**
+     * @return array
+     */
+    public function getTagList()
+    {
+        $tags = $this->getTags();
+        $tag_list = array();
+        foreach( $tags as $t ) {
+            $tag_list[] = $t->getTag();
+        }
+        return $tag_list;
     }
 
     /**

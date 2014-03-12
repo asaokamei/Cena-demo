@@ -2,32 +2,41 @@
 
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
+use Demo\Legacy\PageView;
 use Demo\Models\Comment;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$posting = DemoFactory::getPosting();
+try {
 
-$id = $_GET[ 'id' ];
-$posting->onGet( $id );
+    $view = new PageView();
+    if( !isset( $_GET[ 'id' ] ) ) {
+        throw new \InvalidArgumentException('please indicate post # to view. ');
+    }
+    $id = $_GET[ 'id' ];
+    $posting = DemoFactory::getPosting();
+    $posting->onGet( $id );
 
-$post = $posting->getPost();
-$comments = $posting->getComments();
-$newComment = $posting->getNewComment();
+    $post = $posting->getPost();
+    $comments = $posting->getComments();
+    $newComment = $posting->getNewComment();
+    $tag_list = $posting->getTagList();
+    $form = DemoFactory::getHtmlForms();
 
-// prepare tags
-$tags = $posting->getTags();
-$tag_list = array();
-foreach( $tags as $t ) {
-    $tag_list[] = $t->getTag();
+} catch ( Exception $e ) {
+
+    $view->critical( $e->getMessage() );
+
 }
-$form = DemoFactory::getHtmlForms();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
 <style>
 </style>
-
+<?php
+echo $view->alert();
+if( $view->isCritical() ) goto Html_Page_footer;
+?>
 <div class="post col-md-12">
     <?php $form->setEntity( $post ); ?>
     <h1><?= $form['title']; ?></h1>
@@ -66,4 +75,5 @@ $form = DemoFactory::getHtmlForms();
         <button type="submit" class="btn btn-info btn-sm">add comment</button>
     </form>
 </div>
+<?php Html_Page_footer: ?>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>

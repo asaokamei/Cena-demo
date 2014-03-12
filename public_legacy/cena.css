@@ -25,8 +25,8 @@ div.post h1 {
     padding-left: 4px;
 }
 div.post span.date {
-    color: #666666;
-    font-size: 14px;
+    color: #993300;
+    font-size: 16px;
     font-weight: normal;
     display: block;
 }
@@ -54,8 +54,8 @@ input, textarea {
     font-size: 0.9em;
 }
 div.comments span.date {
-    color: #666666;
-    font-size: 12px;
+    color: #993300;
+    font-size: 14px;
     font-weight: normal;
     display: block;
 }
