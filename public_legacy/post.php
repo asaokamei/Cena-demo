@@ -15,11 +15,16 @@ try {
     }
     $id = $_GET[ 'id' ];
     $posting = DemoFactory::getPosting();
-    $posting->onGet( $id );
+    if( empty($_POST) ) {
+        $posting->onGet( $id );
+        $newComment = $posting->getNewComment();
+    } else {
+        $posting->with( $_POST );
+        $posting->onPostComment( $id );
+    }
 
     $post = $posting->getPost();
     $comments = $posting->getComments();
-    $newComment = $posting->getNewComment();
     $tag_list = $posting->getTagList();
     $form = DemoFactory::getHtmlForms();
 
@@ -59,21 +64,22 @@ if( $view->isCritical() ) goto Html_Page_footer;
     foreach ( $comments as $comment ) {
         /** @var Comment|HtmlForms $form */
         $form->setEntity( $comment );
-        if( !$form->isRetrieved() ) continue;
+        if( $form->isRetrieved() ) {
         ?>
         <div class="comment">
             <span class="date">[<?= $form->getCreatedAt()->format( 'Y.m.d' ); ?>]</span>
             <span class="comment"><?= $form['comment']; ?></span>
         </div>
         <hr>
-    <?php } // done  ?>
+    <?php } else {  ?>
     <!-- show a form to add a new comment -->
-    <form name="addPost" method="post" action="cena.php?id=<?= $id; ?>" >
-        <?php $form->setEntity( $newComment ); ?>
+    <form name="addPost" method="post" action="post.php?id=<?= $id; ?>" >
         <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
         <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
         <button type="submit" class="btn btn-info btn-sm">add comment</button>
     </form>
+    <?php } ?>
+    <?php } ?>
 </div>
 <?php Html_Page_footer: ?>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>

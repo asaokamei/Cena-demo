@@ -133,6 +133,25 @@ class Posting
     }
 
     /**
+     * adds a comment to the post #id.
+     *
+     * @param $id     post id.
+     * @return bool
+     */
+    public function onPostComment( $id )
+    {
+        $this->onGet( $id );
+        $this->process
+            ->setSource( $this->data )
+            ->cleanExcept( 'comment' );
+        if( $this->process->process() ) {
+            $this->cm->save();
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * @param $id
      * @return $this
      */
