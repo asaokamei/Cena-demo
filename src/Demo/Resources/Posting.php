@@ -110,9 +110,9 @@ class Posting
             ->cleanNew( 'tag', 'tag' );
         if( $this->process->process() ) {
             $this->cm->save();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -127,13 +127,16 @@ class Posting
             ->cleanNew( 'tag', 'tag' );
         if( $this->process->process() ) {
             $this->cm->save();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
      * adds a comment to the post #id.
+     * probably this resource class needs to be divided into
+     * - for admins which has all the access rights,
+     * - for users which can only add comments.
      *
      * @param $id     post id.
      * @return bool
@@ -146,9 +149,9 @@ class Posting
             ->cleanExcept( 'comment' );
         if( $this->process->process() ) {
             $this->cm->save();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

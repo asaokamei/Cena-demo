@@ -20,7 +20,11 @@ try {
         $newComment = $posting->getNewComment();
     } else {
         $posting->with( $_POST );
-        $posting->onPostComment( $id );
+        if( $posting->onPostComment( $id ) ) {
+            header( "Location: post.php?id={$id}" );
+            exit;
+        }
+        $view->error( 'failed to post comment' );
     }
 
     $post = $posting->getPost();
