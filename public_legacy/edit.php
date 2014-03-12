@@ -2,7 +2,6 @@
 
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
-use Cena\Cena\Factory;
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
 use Demo\Models\Post;
@@ -38,7 +37,7 @@ $postTag = $posting->getTags();
 // get all the tags.
 /** @var EntityManager $em */
 $em = $cm->getEntityManager()->em();
-$qr = $em->createQuery( "SELECT p FROM Demo\Models\Tag p" );
+$qr = $em->createQuery( "SELECT p FROM Demo\\Models\\Tag p" );
 $tags = $qr->getResult();
 
 /*
@@ -46,7 +45,7 @@ $tags = $qr->getResult();
  */
 
 /** @var HtmlForms|Post $form */
-$form = Factory::getHtmlForms();
+$form = DemoFactory::getHtmlForms();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
 $post_cena_id = $form->getCenaId();
