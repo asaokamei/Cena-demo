@@ -215,20 +215,11 @@ class Posting
      */
     public function getNewComment()
     {
+        /** @var $comment Comment */
         $comment = $this->cm->newEntity( 'comment' );
         $comment->setPost( $this->post );
         $this->post->addComment( $comment );
         return $comment;
-    }
-
-    /**
-     * @return Tag
-     */
-    public function getNewTag()
-    {
-        $tag = $this->cm->newEntity( 'tag' );
-        $this->post->addTag( $tag );
-        return $tag;
     }
     // +----------------------------------------------------------------------+
 }

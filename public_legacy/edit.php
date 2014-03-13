@@ -5,6 +5,7 @@ use Cena\Cena\CenaManager;
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
 use Demo\Models\Post;
+use Demo\Resources\Tags;
 use Doctrine\ORM\EntityManager;
 
 include( dirname(__DIR__) . '/autoload.php' );
@@ -30,15 +31,10 @@ $comments = $posting->getComments();
  */
 
 // get associated tags, and a new tag
-$posting->getTags();
-$newTag = $posting->getNewTag();
+$tags = new Tags();
+$newTag  = $tags->getNewTag();
+$allTags = $tags->getTags();
 $postTag = $posting->getTags();
-
-// get all the tags.
-/** @var EntityManager $em */
-$em = $cm->getEntityManager()->em();
-$qr = $em->createQuery( "SELECT p FROM Demo\\Models\\Tag p" );
-$tags = $qr->getResult();
 
 /*
  * set up form helper...
@@ -83,7 +79,7 @@ $post_cena_id = $form->getCenaId();
             <dt>Tags:</dt>
             <dd>
                 <?php
-                foreach($tags as $t ) {
+                foreach($allTags as $t ) {
                     $form->setEntity( $t );
                     /** @noinspection PhpUnusedParameterInspection */
                     $checked = $postTag->exists( function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
