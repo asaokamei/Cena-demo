@@ -54,43 +54,58 @@ $post_cena_id = $form->getCenaId();
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Status:</dt>
             <dd>
-                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
-                        <?= $form->isChecked('status', Post::STATUS_PREVIEW) ?>
-                              placeholder="status" value="<?= Post::STATUS_PREVIEW ?>" >Preview</label>
-                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
-                        <?= $form->isChecked('status', Post::STATUS_PUBLIC) ?>
-                              placeholder="status" value="<?= Post::STATUS_PUBLIC?>" >Public</label>
-                <label><input type="radio" name="<?= $post_form_name ?>[prop][status]"
-                        <?= $form->isChecked('status', Post::STATUS_HIDE) ?>
-                              placeholder="status" value="<?= Post::STATUS_HIDE ?>" >Hide this</label>
+                <label><input type="radio"
+                              name="<?= $post_form_name ?>[prop][status]"
+                              placeholder="status" value="<?= Post::STATUS_PREVIEW ?>"
+                              <?= $form->isChecked('status', Post::STATUS_PREVIEW) ?>>Preview</label>
+                <label><input type="radio"
+                              name="<?= $post_form_name ?>[prop][status]"
+                              placeholder="status" value="<?= Post::STATUS_PUBLIC?>"
+                              <?= $form->isChecked('status', Post::STATUS_PUBLIC) ?>>Public</label>
+                <label><input type="radio"
+                              name="<?= $post_form_name ?>[prop][status]"
+                              placeholder="status" value="<?= Post::STATUS_HIDE ?>"
+                              <?= $form->isChecked('status', Post::STATUS_HIDE) ?> >Hide this</label>
             </dd>
             <dt>Publish At:</dt>
             <dd><input type="datetime-local" name="<?= $post_form_name ?>[prop][publishAt]"
                        class="form-control" style="width: 250px"
-                       placeholder="publish date" value="<?= $form->get( 'publishAt' )->format('Y-m-d\TH:i:s') ?>" ></dd>
+                       placeholder="publish date"
+                       value="<?= $form->get( 'publishAt' )->format('Y-m-d\TH:i:s') ?>" ></dd>
             <dt>Content:</dt>
-            <dd><textarea name="<?= $post_form_name ?>[prop][content]" rows="10" class="form-control"
+            <dd><textarea name="<?= $post_form_name ?>[prop][content]"
+                          rows="10" class="form-control"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
             <dt>Tags:</dt>
             <dd>
                 <?php
-                foreach($tags as $t ) {
+                /*
+                 * list all existing tags.
+                 */
+                foreach( $tags as $t ) {
+
                     $form->setEntity( $t );
                     /** @noinspection PhpUnusedParameterInspection */
-                    $checked = $postTag->exists( function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
+                    $checked = $postTag->exists(
+                        function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
                     ?>
                     <label>
-                        <input type="checkbox" name="<?= $post_form_name ?>[link][tags][]"
+                        <input type="checkbox"
+                               name="<?= $post_form_name ?>[link][tags][]"
                                value="<?= $form->getCenaId() ?>" <?= $checked ?> />
                         <?= $form['tag'] ?>
                     </label>
                 <?php
                 }
+                // for the new tag
                 $form->setEntity( $tags->getNewTag() );
                 ?>
                 <label>
-                    <input type="checkbox" name="<?= $post_form_name ?>[link][tags][]" value="<?= $form->getCenaId() ?>" />
-                    <input type="text" name="<?= $form->getFormName() ?>[prop][tag]" value=""
+                    <input type="checkbox"
+                           name="<?= $post_form_name ?>[link][tags][]"
+                           value="<?= $form->getCenaId() ?>" />
+                    <input type="text"
+                           name="<?= $form->getFormName() ?>[prop][tag]" value=""
                            placeholder="new tag..." class="form-control" width="200px">
                 </label>
             </dd>
@@ -99,6 +114,7 @@ $post_cena_id = $form->getCenaId();
     </div>
     
     <?php if ( count( $comments ) > 0 ) { ?>
+
         <div class="comments col-md-8">
             <h2>comments...</h2>
             <?php
@@ -106,18 +122,24 @@ $post_cena_id = $form->getCenaId();
              * list all comments. 
              */
             foreach ( $comments as $comment ) {
-                if ( !$cm->getEntityManager()->isRetrieved( $comment ) ) continue;
+
                 $form->setEntity( $comment );
+                if ( !$form->isRetrieved() ) continue;
                 ?>
                 <hr>
                 <div class="comment">
                     <label>
-                        to delete, check this:<input type="checkbox" name="<?= $form->getFormName() ?>[del]"
-                                                     value="<?= $post_cena_id ?>">
+                        to delete, check this:
+                        <input type="checkbox"
+                               name="<?= $form->getFormName() ?>[del]"
+                               value="<?= $post_cena_id ?>">
                     </label>
-                    <input type="hidden" name="<?= $form->getFormName() ?>[link][post]" class="form-control"
+                    <input type="hidden"
+                           name="<?= $form->getFormName() ?>[link][post]"
+                           class="form-control"
                            value="<?= $post_cena_id ?>">
-                    <textarea name="<?= $form->getFormName() ?>[prop][comment]" rows="4" class="form-control"
+                    <textarea name="<?= $form->getFormName() ?>[prop][comment]"
+                              rows="4" class="form-control"
                               placeholder="comment here..."><?= $form['comment']; ?></textarea>
                 </div>
             <?php } ?>
