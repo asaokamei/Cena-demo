@@ -29,18 +29,13 @@ $comments = $posting->getComments();
 /*
  * preparing tags.
  */
-
-// get associated tags, and a new tag
 $tags = new Tags();
-$newTag  = $tags->getNewTag();
-$allTags = $tags->getTags();
 $postTag = $posting->getTags();
 
 /*
  * set up form helper...
  */
 
-/** @var HtmlForms|Post $form */
 $form = DemoFactory::getHtmlForms();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
@@ -79,7 +74,7 @@ $post_cena_id = $form->getCenaId();
             <dt>Tags:</dt>
             <dd>
                 <?php
-                foreach($allTags as $t ) {
+                foreach($tags as $t ) {
                     $form->setEntity( $t );
                     /** @noinspection PhpUnusedParameterInspection */
                     $checked = $postTag->exists( function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
@@ -91,7 +86,7 @@ $post_cena_id = $form->getCenaId();
                     </label>
                 <?php
                 }
-                $form->setEntity( $newTag );
+                $form->setEntity( $tags->getNewTag() );
                 ?>
                 <label>
                     <input type="checkbox" name="<?= $post_form_name ?>[link][tags][]" value="<?= $form->getCenaId() ?>" />

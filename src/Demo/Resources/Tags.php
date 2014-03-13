@@ -5,8 +5,9 @@ use Cena\Cena\CenaManager;
 use Demo\Factory;
 use Demo\Models\Tag;
 use Doctrine\ORM\EntityManager;
+use Traversable;
 
-class Tags
+class Tags implements \IteratorAggregate
 {
     /**
      * @var EntityManager
@@ -19,12 +20,18 @@ class Tags
     protected $cm;
 
     /**
+     * @var Tag[]
+     */
+    protected $tags;
+
+    /**
      *
      */
     public function __construct()
     {
         $this->cm = Factory::getCenaManager();
         $this->em = Factory::getEntityManager();
+        $this->tags = $this->getTags();
     }
 
     /**
@@ -42,5 +49,14 @@ class Tags
     public function getNewTag()
     {
         return $this->cm->newEntity('tag');
+    }
+
+    /**
+     * Retrieve an external iterator
+     * @return Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator( $this->tags );
     }
 }
