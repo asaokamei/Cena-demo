@@ -60,3 +60,11 @@ div.comments span.date {
     display: block;
 }
 
+span.error-msg {
+    color: #cc0000;
+    font-weight: bold;
+}
+span.error-msg:before {
+    content: "*";
+    color: red;
+}

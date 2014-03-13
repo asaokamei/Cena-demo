@@ -215,7 +215,7 @@ class Posting
      */
     public function getNewComment()
     {
-        $comment = new Comment();
+        $comment = $this->cm->newEntity( 'comment' );
         $comment->setPost( $this->post );
         $this->post->addComment( $comment );
         return $comment;

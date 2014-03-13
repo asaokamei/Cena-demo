@@ -17,7 +17,7 @@ try {
     $posting = DemoFactory::getPosting();
     if( empty($_POST) ) {
         $posting->onGet( $id );
-        $newComment = $posting->getNewComment();
+        $posting->getNewComment();
     } else {
         $posting->with( $_POST );
         if( $posting->onPostComment( $id ) ) {
@@ -75,14 +75,17 @@ if( $view->isCritical() ) goto Html_Page_footer;
             <span class="comment"><?= $form['comment']; ?></span>
         </div>
         <hr>
-    <?php } else {  ?>
-    <!-- show a form to add a new comment -->
-    <form name="addPost" method="post" action="post.php?id=<?= $id; ?>" >
-        <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
-        <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
-        <button type="submit" class="btn btn-info btn-sm">add comment</button>
-    </form>
-    <?php } ?>
+        <?php } else {  ?>
+            <!-- show a form to add a new comment -->
+            <div class="form-group<?php if( $form->isError() ) { echo ' has-error'; } ?>">
+                <form name="addPost" method="post" action="post.php?id=<?= $id; ?>" >
+                    <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
+                    <?php if( $msg = $form->getError('comment') ) { echo "<span class=\"error-msg\">$msg</span>"; } ?>
+                    <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
+                    <button type="submit" class="btn btn-info btn-sm">add comment</button>
+                </form>
+            </div>
+        <?php } ?>
     <?php } ?>
 </div>
 <?php Html_Page_footer: ?>
