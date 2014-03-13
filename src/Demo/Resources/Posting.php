@@ -151,6 +151,10 @@ class Posting
             $this->cm->save();
             return true;
         }
+        $collection = $this->cm->getCollection();
+        $comments   = $collection->findByModel( 'comment' );
+        $this->post->getComments();
+        $this->post->addComment( $comments[0] );
         return false;
     }
 
