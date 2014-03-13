@@ -226,7 +226,7 @@ class Posting
      */
     public function getNewTag()
     {
-        $tag = new Tag();
+        $tag = $this->cm->newEntity( 'tag' );
         $this->post->addTag( $tag );
         return $tag;
     }
