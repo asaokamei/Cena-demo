@@ -1,7 +1,5 @@
 <?php
 
-/** @var CenaManager $cm */
-use Cena\Cena\CenaManager;
 use Demo\Resources\Posting;
 use Demo\Factory as DemoFactory;
 use Demo\Legacy\PageView;
@@ -165,6 +163,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     <label>
                         to delete, check this:
                         <input type="checkbox"
+                               <?= $form->checkIf( $form->isDeleted() ); ?>
                                name="<?= $form->getFormName() ?>[del]"
                                value="<?= $post_cena_id ?>">
                     </label>

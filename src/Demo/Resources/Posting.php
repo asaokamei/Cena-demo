@@ -105,6 +105,13 @@ class Posting
     public function onPut( $id )
     {
         $this->onGet( $id );
+        /*
+         * next line is a hack. 
+         * it is necessary to load the associated comments via getComments 
+         * (which uses Doctrine2's ArrayAccess) before loading them via Cena.
+         * otherwise these entities becomes different objects.
+         */
+        count( $this->post->getComments() );  
         $this->post->setTags( array() ); // set tags empty. 
         $this->process->setSource( $this->data )
             ->cleanNew( 'tag', 'tag' );
