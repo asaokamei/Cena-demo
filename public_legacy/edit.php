@@ -12,7 +12,9 @@ try {
 
     $id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
 
-    /** @var PageView $view */
+    /**
+     * @var PageView $view
+     */
     $view = call_user_func( function( $id, $input ) {
 
         $view = new PageView();
@@ -81,7 +83,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <h1><?= $view['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
-            <dt>Title:</dt>
+            <dt>Title: <?= $form->getErrorMsg('title') ?></dt>
             <dd><input type="text" name="<?= $post_form_name ?>[prop][title]" class="form-control"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Status:</dt>
@@ -89,22 +91,24 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 <label><input type="radio"
                               name="<?= $post_form_name ?>[prop][status]"
                               placeholder="status" value="<?= Post::STATUS_PREVIEW ?>"
-                              <?= $form->isChecked('status', Post::STATUS_PREVIEW) ?>>Preview</label>
+                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_PREVIEW)) ?>>Preview</label>
                 <label><input type="radio"
                               name="<?= $post_form_name ?>[prop][status]"
                               placeholder="status" value="<?= Post::STATUS_PUBLIC?>"
-                              <?= $form->isChecked('status', Post::STATUS_PUBLIC) ?>>Public</label>
+                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_PUBLIC)) ?>>Public</label>
                 <label><input type="radio"
                               name="<?= $post_form_name ?>[prop][status]"
                               placeholder="status" value="<?= Post::STATUS_HIDE ?>"
-                              <?= $form->isChecked('status', Post::STATUS_HIDE) ?> >Hide this</label>
+                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_HIDE)) ?> >Hide this</label>
             </dd>
-            <dt>Publish At:</dt>
+            
+            <dt>Publish At:  <?= $form->getErrorMsg('publishAt') ?></dt>
             <dd><input type="datetime-local" name="<?= $post_form_name ?>[prop][publishAt]"
                        class="form-control" style="width: 250px"
                        placeholder="publish date"
                        value="<?= $form->get( 'publishAt' )->format('Y-m-d\TH:i:s') ?>" ></dd>
-            <dt>Content:</dt>
+            
+            <dt>Content:  <?= $form->getErrorMsg('content') ?></dt>
             <dd><textarea name="<?= $post_form_name ?>[prop][content]"
                           rows="10" class="form-control"
                           placeholder="content here..."><?= $form['content']; ?></textarea></dd>
@@ -171,9 +175,11 @@ if( $view->isCritical() ) goto Html_Page_footer;
                            name="<?= $form->getFormName() ?>[link][post]"
                            class="form-control"
                            value="<?= $post_cena_id ?>">
+                    
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]"
                               rows="4" class="form-control"
                               placeholder="comment here..."><?= $form['comment']; ?></textarea>
+                    <?= $form->getErrorMsg('comment') ?>
                 </div>
             <?php } ?>
         </div>
