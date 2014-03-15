@@ -2,51 +2,85 @@
 
 /** @var CenaManager $cm */
 use Cena\Cena\CenaManager;
-use Cena\Cena\Utils\HtmlForms;
+use Demo\Resources\Posting;
 use Demo\Factory as DemoFactory;
+use Demo\Legacy\PageView;
 use Demo\Models\Post;
 use Demo\Resources\Tags;
-use Doctrine\ORM\EntityManager;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$posting = DemoFactory::getPosting();
-$cm = DemoFactory::getCenaManager();
+try {
 
-$id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
-if ( $id ) { // edit an existing posting. 
-    $posting->onGet( $id );
-    $pageTitle = 'Edit Post';
+    $id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
+
+    /** @var PageView $view */
+    $view = call_user_func( function( $id, $input ) {
+
+        $view = new PageView();
+        $view['post']  = $posting = DemoFactory::getPosting();;
+        $view['title'] = $id ? 'Edit Post' : 'New Post';
+
+        // get post data or create a new one if no input.
+        if( !$input ) {
+            ( $id ) ?
+                $posting->onGet( $id ) :
+                $posting->onNew();
+            return $view;
+        }
+        // there is an input. i.e. post method.    
+        $posting->with( $input );
+        $success = ( $id ) ?
+            $posting->onPut( $id ) :
+            $posting->onPost();
+
+        if( $success ) {
+            $id = $posting->getPost()->getPostId();
+            header( "Location: post.php?id={$id}" );
+            exit;
+        }
+        $view->error( 'failed to process the blog post' );
+        return $view;
+
+    }, $id, $_POST );
+
+
+    /** @var Posting $posting */
+    $posting = $view['post'];
+    $post = $posting->getPost();
+    $comments = $posting->getComments();
+
+    /*
+     * preparing tags.
+     */
+    $tags = new Tags();
+    $postTag = $posting->getTags();
+
+    /*
+     * set up form helper...
+     */
+    $form = DemoFactory::getHtmlForms();
+    $form->setEntity( $post );
+    $post_form_name = $form->getFormName();
+    $post_cena_id = $form->getCenaId();
+
+
+} catch ( \Exception $e ) {
+
+    $view = new PageView();
+    $view->critical( $e->getMessage() );
 }
-else { // form for a new posting. 
-    $posting->onNew();
-    $pageTitle = 'New Post';
-}
-
-$post = $posting->getPost();
-$comments = $posting->getComments();
-
-/*
- * preparing tags.
- */
-$tags = new Tags();
-$postTag = $posting->getTags();
-
-/*
- * set up form helper...
- */
-
-$form = DemoFactory::getHtmlForms();
-$form->setEntity( $post );
-$post_form_name = $form->getFormName();
-$post_cena_id = $form->getCenaId();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
-<form name="postForm" method="post" action="cena.php?id=<?= $id; ?>">
+<?php
+echo $view->alert();
+if( $view->isCritical() ) goto Html_Page_footer;
+?>
+<form name="postForm" method="post" action="edit.php?id=<?= $id; ?>">
     
     <div class="post col-md-12">
-        <h1><?= $pageTitle; ?></h1>
+        <h1><?= $view['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title:</dt>
@@ -151,4 +185,5 @@ $post_cena_id = $form->getCenaId();
     <?php } ?>
     
 </form>
+<?php Html_Page_footer: ?>
 <?php include( __DIR__ . '/menu/footer.php' ); ?>
