@@ -79,6 +79,18 @@ if( $view->isCritical() ) goto Html_Page_footer;
 ?>
 <form name="postForm" method="post" action="edit.php?id=<?= $id; ?>">
     
+    <style type="text/css">
+        dt {
+            margin-top:    1em ;
+            margin-bottom: 0.5em;
+        }
+        dd {
+            margin-left: 2em ;
+        }
+        label {
+            margin-right: 1em;
+        }
+    </style>
     <div class="post col-md-12">
         <h1><?= $view['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
@@ -164,13 +176,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 ?>
                 <hr>
                 <div class="comment">
-                    <label>
-                        to delete, check this:
-                        <input type="checkbox"
-                               <?= $form->checkIf( $form->isDeleted() ); ?>
-                               name="<?= $form->getFormName() ?>[del]"
-                               value="<?= $post_cena_id ?>">
-                    </label>
+                    <?= $form->getErrorMsg('comment') ?>
                     <input type="hidden"
                            name="<?= $form->getFormName() ?>[link][post]"
                            class="form-control"
@@ -179,7 +185,13 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]"
                               rows="4" class="form-control"
                               placeholder="comment here..."><?= $form['comment']; ?></textarea>
-                    <?= $form->getErrorMsg('comment') ?>
+                    <label>
+                        to delete, check this:
+                        <input type="checkbox"
+                            <?= $form->checkIf( $form->isDeleted() ); ?>
+                               name="<?= $form->getFormName() ?>[del]"
+                               value="<?= $post_cena_id ?>">
+                    </label>
                 </div>
             <?php } ?>
         </div>
