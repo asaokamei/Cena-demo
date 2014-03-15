@@ -165,7 +165,7 @@ class Posting
     public function onDel( $id )
     {
         $this->onGet( $id );
-        $this->cm->delEntity( $this->post );
+        $this->cm->manipulate($this->post)->delEntity();
         $this->cm->save();
         return $this;
     }
