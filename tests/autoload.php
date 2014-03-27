@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = include( dirname( __DIR__ ) . '/vendor/autoload.php' );
 
+$loader->addPsr4( 'Demo\\', dirname( __DIR__ ) . '/src/Demo/' );
 $loader->addPsr4( 'CenaDemo\\', __DIR__ . '/CenaDemo/' );
 $loader->register();
 

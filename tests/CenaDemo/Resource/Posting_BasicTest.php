@@ -3,8 +3,8 @@ namespace CenaDemo\Resource;
 
 use Cena\Cena\CenaManager;
 use Cena\Cena\Process;
-use CenaDemo\Entity\Posting;
-use CenaDemo\Entity\CommentValidator;
+use Demo\Resources\Posting;
+use Demo\Resources\CommentValidator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 
@@ -31,8 +31,8 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $em = include( __DIR__ . '/../../em-doctrine2.php' );
         $tool = new SchemaTool( $em );
         $classes = array(
-            $em->getClassMetadata( 'CenaDemo\Entity\Post' ),
-            $em->getClassMetadata( 'CenaDemo\Entity\Comment' ),
+            $em->getClassMetadata( 'Demo\Models\Post' ),
+            $em->getClassMetadata( 'Demo\Models\Comment' ),
         );
         $tool->dropSchema( $classes );
         $tool->createSchema( $classes );
@@ -41,9 +41,9 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
     function setUp()
     {
         $this->cm = include( __DIR__ . '/../../cm-doctrine2.php' );
-        $this->cm->setClass( 'CenaDemo\Entity\Post' );
-        $this->cm->setClass( 'CenaDemo\Entity\Comment' );
-        $this->cm->setValidator( 'CenaDemo\Entity\Comment', new CommentValidator() );
+        $this->cm->setClass( 'Demo\Models\Post' );
+        $this->cm->setClass( 'Demo\Models\Comment' );
+        $this->cm->setValidator( 'Demo\Models\Comment', new CommentValidator() );
         $this->process = new Process( $this->cm );
         $this->post = $this->getNewPosting();
     }
@@ -58,7 +58,7 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
     function test0()
     {
         $this->assertEquals( 'Cena\Cena\CenaManager', get_class( $this->cm ) );
-        $this->assertEquals( 'CenaDemo\Entity\Posting', get_class( $this->post ) );
+        $this->assertEquals( 'Demo\Resources\Posting', get_class( $this->post ) );
     }
 
     /**
@@ -70,7 +70,7 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( null, $this->post->getPost() );
         // make a new post. 
         $this->post->onNew();
-        $this->assertEquals( 'CenaDemo\Entity\Post', get_class( $this->post->getPost() ) );
+        $this->assertEquals( 'Demo\Models\Post', get_class( $this->post->getPost() ) );
     }
 
     /**
@@ -284,9 +284,9 @@ class Posting_BasicTest extends \PHPUnit_Framework_TestCase
         // make sure any of the post and comments are in db.
         /** @var EntityManager $em */
         $em = $this->cm->getEntityManager()->em();
-        $this->assertEquals( null, $em->find( 'CenaDemo\Entity\Post', $post_id ) );
-        $this->assertEquals( null, $em->find( 'CenaDemo\Entity\Comment', $com_id1 ) );
-        $this->assertEquals( null, $em->find( 'CenaDemo\Entity\Comment', $com_id2 ) );
+        $this->assertEquals( null, $em->find( 'Demo\Models\Post', $post_id ) );
+        $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id1 ) );
+        $this->assertEquals( null, $em->find( 'Demo\Models\Comment', $com_id2 ) );
     }
 
     /**
