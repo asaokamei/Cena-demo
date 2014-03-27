@@ -23,7 +23,7 @@ call_user_func( function() {
                     "this text uses markdown style, and converted to html. \n\n".
                     "please edit this content. ",
             ],
-            'link' => [ 'tags' => 'tag.0.1' ]
+            'link' => [ 'tags' => [ 'tag.0.1' ] ]
         ),
         'post.0.2'    => array(
             'prop' => [
