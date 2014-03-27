@@ -142,6 +142,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                                name="<?= $post_form_name ?>[link][tags][]"
                                value="<?= $form->getCenaId() ?>" <?= $checked ?> />
                         <?= $form['tag'] ?>
+                        <?= $form->getError('tag');?>
                     </label>
                 <?php
                 }
@@ -155,6 +156,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     <input type="text"
                            name="<?= $form->getFormName() ?>[prop][tag]" value=""
                            placeholder="new tag..." class="form-control" width="200px">
+                    <?= $form->getError('tag');?>
                 </label>
             </dd>
         </dl>
