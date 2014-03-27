@@ -129,7 +129,7 @@ class Posting
     public function onDel( $id )
     {
         $this->onGet( $id );
-        $this->cm->delEntity( $this->post );
+        $this->cm->manipulate( $this->post )->delEntity();
         $this->cm->save();
         return $this;
     }
@@ -158,7 +158,7 @@ class Posting
      */
     public function getNewComment()
     {
-        $comment = new Comment();
+        $comment = $this->cm->newEntity( 'Comment' );
         $comment->setPost( $this->post );
         $this->post->addComment( $comment );
         return $comment;
