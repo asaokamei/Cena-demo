@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class PostDto
  * @package Demo\Models
  *
+ * @MappedSuperclass
+ * @HasLifecycleCallbacks
  */
 class PostDto
 {
@@ -153,5 +155,22 @@ class PostDto
     public function setStatus( $status )
     {
         $this->status = $status;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function setCreatedAt()
+    {
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = $this->createdAt;
+    }
+
+    /**
+     * @PreUpdate
+     */
+    public function setUpdatedAt()
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 }

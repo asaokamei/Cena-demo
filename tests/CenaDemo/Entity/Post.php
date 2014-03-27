@@ -8,7 +8,6 @@ use Michelf\MarkdownExtra;
  * @package CenaDemo\Entity
  *
  * @Entity
- * @HasLifecycleCallbacks
  * @Table(name="test_post")
  */
 class Post extends PostDto
@@ -24,23 +23,6 @@ class Post extends PostDto
     {
         parent::__construct();
         $this->status = self::STATUS_PREVIEW;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function setCreatedAt()
-    {
-        $this->createdAt = new \DateTime('now');
-        $this->updatedAt = $this->createdAt;
-    }
-
-    /**
-     * @PreUpdate
-     */
-    public function setUpdatedAt()
-    {
-        $this->updatedAt = new \DateTime('now');
     }
 
     /**
