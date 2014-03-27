@@ -5,6 +5,8 @@ namespace Demo\Models;
  * Class Comment
  * @package Demo\Models
  *
+ * @MappedSuperClass
+ * @HasLifecycleCallbacks
  */
 class CommentDto
 {
@@ -116,5 +118,22 @@ class CommentDto
     public function setStatus( $status )
     {
         $this->status = $status;
+    }
+
+    /**
+     * @PrePersist
+     */
+    public function setCreatedAt()
+    {
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = $this->createdAt;
+    }
+
+    /**
+     * @PreUpdate
+     */
+    public function setUpdatedAt()
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 }

@@ -8,7 +8,6 @@ namespace Demo\Models;
  *
  * @Entity
  * @Table(name="comment")
- * @HasLifecycleCallbacks
  */
 class Comment extends CommentDto
 {
@@ -22,23 +21,6 @@ class Comment extends CommentDto
     public function __construct()
     {
         $this->status = self::STATUS_NOT_YET;
-    }
-
-    /**
-     * @PrePersist
-     */
-    public function setCreatedAt()
-    {
-        $this->createdAt = new \DateTime('now');
-        $this->updatedAt = $this->createdAt;
-    }
-
-    /**
-     * @PreUpdate
-     */
-    public function setUpdatedAt()
-    {
-        $this->updatedAt = new \DateTime('now');
     }
 
     /**
