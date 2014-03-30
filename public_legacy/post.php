@@ -4,36 +4,44 @@ use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
 use Demo\Legacy\PageView;
 use Demo\Models\Comment;
+use Demo\Models\Post;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
 try {
 
-    $view = new PageView();
-    if( !isset( $_GET[ 'id' ] ) ) {
-        throw new \InvalidArgumentException('please indicate post # to view. ');
-    }
-    $id = $_GET[ 'id' ];
-    $posting = DemoFactory::getPosting();
-    if( empty($_POST) ) {
-        $posting->onGet( $id );
-        $posting->getNewComment();
-    } else {
-        $posting->with( $_POST );
-        if( $posting->onPostComment( $id ) ) {
-            header( "Location: post.php?id={$id}" );
-            exit;
-        }
-        $view->error( 'failed to post comment' );
-    }
+    $id = isset( $_GET[ 'id' ] )? $_GET[ 'id' ] : null;
+    $view = call_user_func( function($id) {
 
-    $post = $posting->getPost();
-    $comments = $posting->getComments();
-    $tag_list = $posting->getTagList();
-    $form = DemoFactory::getHtmlForms();
+        if( !isset( $id ) ) {
+            throw new \InvalidArgumentException('please indicate post # to view. ');
+        }
+        $view = new PageView();
+        $posting = DemoFactory::getPosting();
+        if( empty($_POST) ) {
+            $posting->onGet( $id );
+            $posting->getNewComment();
+        } else {
+            $posting->with( $_POST );
+            if( $posting->onPostComment( $id ) ) {
+                header( "Location: post.php?id={$id}" );
+                exit;
+            }
+            $view->error( 'failed to post comment' );
+        }
+
+        $view['post']     = $posting->getPost();
+        $view['comments'] = $posting->getComments();
+        $view['tag_list'] = $posting->getTagList();
+        $view['form']     = DemoFactory::getHtmlForms();
+        
+        return $view;
+    }, $id );
+    
 
 } catch ( Exception $e ) {
 
+    $view = new PageView();
     $view->critical( $e->getMessage() );
 
 }
@@ -45,11 +53,16 @@ try {
 <?php
 echo $view->alert();
 if( $view->isCritical() ) goto Html_Page_footer;
+
+/** @var Post $post */
+/** @var Post|HtmlForms $form */
+$post = $view['post'];
+$form = $view['form'];
+$form->setEntity( $post ); 
 ?>
 <div class="post col-md-12">
-    <?php $form->setEntity( $post ); ?>
     <h1><?= $form['title']; ?></h1>
-    <span class="date">[<?= $form->get( 'publishAt' )->format( 'Y.m.d' ); ?>] [<?= implode( ', ', $tag_list ); ?>]</span>
+    <span class="date">[<?= $form->get( 'publishAt' )->format( 'Y.m.d' ); ?>] [<?= implode( ', ', $view['tag_list'] ); ?>]</span>
     <div style="clear: both" ></div>
     <div class="content">
         <span><?= $post->getContentHtml(); ?></span>
@@ -65,7 +78,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
      * list all existing comments.
      */
     $post_cena_id = $form->getCenaId();
-    foreach ( $comments as $comment ) {
+    foreach ( $view['comments'] as $comment ) {
         /** @var Comment|HtmlForms $form */
         $form->setEntity( $comment );
         if( $form->isRetrieved() ) {

@@ -1,29 +1,43 @@
 <?php
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Factory as DemoFactory;
+use Demo\Legacy\PageView;
 use Demo\Models\PostList;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-if( isset( $_GET['act'] ) ) {
-    
-    if( $_GET['act'] == 'sample' ) {
-        include( dirname(__DIR__).'/config/sample-db.php' );
-        header( "Location: index.php" );
-        exit;
-    }
-    if( $_GET['act'] == 'setup' ) {
-        include( dirname(__DIR__).'/config/setup-db.php' );
-        header( "Location: index.php" );
-        exit;
-    }
-}
+try {
 
-$em = DemoFactory::getEntityManager();
-$query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
-/** @var PostList[] $posts */
-$posts = $query->getResult();
-$form  = DemoFactory::getHtmlForms();
+    $action = isset( $_GET['act'] ) ? $_GET['act'] : null;
+
+    $view = call_user_func( function($action) {
+
+        if( $action == 'sample' ) {
+            include( dirname(__DIR__).'/config/sample-db.php' );
+            header( "Location: index.php" );
+            exit;
+        }
+        if( $action == 'setup' ) {
+            include( dirname(__DIR__).'/config/setup-db.php' );
+            header( "Location: index.php" );
+            exit;
+        }
+        $view = new PageView();
+        $em = DemoFactory::getEntityManager();
+        $query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
+        $view[ 'posts' ] = $query->getResult();
+        $view[ 'form'  ]  = DemoFactory::getHtmlForms();
+
+        return $view;
+
+    }, $action );
+
+} catch ( Exception $e ) {
+
+    $view = new PageView();
+    $view->critical( $e->getMessage() );
+
+}
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>
@@ -45,6 +59,8 @@ $form  = DemoFactory::getHtmlForms();
         </ul>
     </div>
 <?php
+$form = $view['form'];
+$posts = $view['posts'];
 foreach ( $posts as $post ) {
     /** @var PostList|HtmlForms $form */
     $form->setEntity( $post );

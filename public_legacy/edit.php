@@ -79,7 +79,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
 ?>
 <form name="postForm" method="post" action="edit.php?id=<?= $id; ?>">
     
-    <style type="text/css">
+    <style type="text/css" scoped="">
         dt {
             margin-top:    1em ;
             margin-bottom: 0.5em;
