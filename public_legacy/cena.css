@@ -68,3 +68,13 @@ span.error-msg:before {
     content: "*";
     color: red;
 }
+dt {
+    margin-top:    1em ;
+    margin-bottom: 0.5em;
+}
+dd {
+    margin-left: 2em ;
+}
+label {
+    margin-right: 1em;
+}

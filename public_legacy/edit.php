@@ -79,18 +79,6 @@ if( $view->isCritical() ) goto Html_Page_footer;
 ?>
 <form name="postForm" method="post" action="edit.php?id=<?= $id; ?>">
     
-    <style type="text/css" scoped="">
-        dt {
-            margin-top:    1em ;
-            margin-bottom: 0.5em;
-        }
-        dd {
-            margin-left: 2em ;
-        }
-        label {
-            margin-right: 1em;
-        }
-    </style>
     <div class="post col-md-12">
         <h1><?= $view['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
