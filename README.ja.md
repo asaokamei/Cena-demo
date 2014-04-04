@@ -12,6 +12,11 @@ ORMとしてDoctrine2をベースに利用。
 CSRFなどのセキュリティ対策を行っていませんので、
 絶対に一般に公開しないでください。
 
+#### 必要条件
+
+*   Apache、PHP5.4以上
+*   MySQL
+
 #### Cenaとは
 
 Composite Entity Notation and Augmentationの略。
