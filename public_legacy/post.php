@@ -1,50 +1,14 @@
 <?php
 
 use Cena\Cena\Utils\HtmlForms;
-use Demo\Factory as DemoFactory;
-use Demo\Legacy\PageView;
+use Demo\Controller\PostController;
 use Demo\Models\Comment;
 use Demo\Models\Post;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-try {
-
-    $id = isset( $_GET[ 'id' ] )? $_GET[ 'id' ] : null;
-    $view = call_user_func( function($id) {
-
-        if( !isset( $id ) ) {
-            throw new \InvalidArgumentException('please indicate post # to view. ');
-        }
-        $view = new PageView();
-        $posting = DemoFactory::getPosting();
-        if( empty($_POST) ) {
-            $posting->onGet( $id );
-            $posting->getNewComment();
-        } else {
-            $posting->with( $_POST );
-            if( $posting->onPostComment( $id ) ) {
-                header( "Location: post.php?id={$id}" );
-                exit;
-            }
-            $view->error( 'failed to post comment' );
-        }
-
-        $view['post']     = $posting->getPost();
-        $view['comments'] = $posting->getComments();
-        $view['tag_list'] = $posting->getTagList();
-        $view['form']     = DemoFactory::getHtmlForms();
-        
-        return $view;
-    }, $id );
-    
-
-} catch ( Exception $e ) {
-
-    $view = new PageView();
-    $view->critical( $e->getMessage() );
-
-}
+$controller = PostController::factory();
+$view = $controller->execute();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -91,7 +55,7 @@ $form->setEntity( $post );
         <?php } else {  ?>
             <!-- show a form to add a new comment -->
             <div class="form-group<?php if( $form->isError() ) { echo ' has-error'; } ?>">
-                <form name="addPost" method="post" action="post.php?id=<?= $id; ?>" >
+                <form name="addPost" method="post" action="post.php?id=<?= $view['id']; ?>" >
                     <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
                     <?php if( $msg = $form->getError('comment') ) { echo "<span class=\"error-msg\">$msg</span>"; } ?>
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>

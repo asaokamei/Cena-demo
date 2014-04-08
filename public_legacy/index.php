@@ -1,43 +1,12 @@
 <?php
 use Cena\Cena\Utils\HtmlForms;
-use Demo\Factory as DemoFactory;
-use Demo\Legacy\PageView;
+use Demo\Controller\IndexController;
 use Demo\Models\PostList;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-try {
-
-    $action = isset( $_GET['act'] ) ? $_GET['act'] : null;
-
-    $view = call_user_func( function($action) {
-
-        if( $action == 'sample' ) {
-            include( dirname(__DIR__).'/config/sample-db.php' );
-            header( "Location: index.php" );
-            exit;
-        }
-        if( $action == 'setup' ) {
-            include( dirname(__DIR__).'/config/setup-db.php' );
-            header( "Location: index.php" );
-            exit;
-        }
-        $view = new PageView();
-        $em = DemoFactory::getEntityManager();
-        $query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
-        $view[ 'posts' ] = $query->getResult();
-        $view[ 'form'  ]  = DemoFactory::getHtmlForms();
-
-        return $view;
-
-    }, $action );
-
-} catch ( Exception $e ) {
-
-    $view = new PageView();
-    $view->critical( $e->getMessage() );
-
-}
+$controller = IndexController::factory();
+$view = $controller->execute( 'act' );
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>
@@ -50,6 +19,10 @@ try {
         <p><a href="https://github.com/asaokamei/Cena-demo" class="btn btn-primary btn-lg" role="button" target="_blank">See it on the github »</a></p>
     </div>
 </div>
+<?php
+echo $view->alert();
+
+?>
 <div class="post col-md-12">
     <div class="col-md-4" style="float: right;background-color: #f0f0f0; border: 2px solid #e0e0e0;">
         <h2>utilities</h2>
@@ -60,7 +33,7 @@ try {
     </div>
 <?php
 $form = $view['form'];
-$posts = $view['posts'];
+$posts = $view->collection('posts');
 foreach ( $posts as $post ) {
     /** @var PostList|HtmlForms $form */
     $form->setEntity( $post );

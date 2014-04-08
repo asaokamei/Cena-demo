@@ -40,6 +40,19 @@ class PageView implements \ArrayAccess
     }
 
     /**
+     * @param $key
+     * @return array|null
+     */
+    function collection( $key )
+    {
+        $got = $this->get( $key );
+        if( !is_array( $got ) ) {
+            return array();
+        }
+        return $got;
+    }
+
+    /**
      * @param bool $tag
      * @return null|string
      */
