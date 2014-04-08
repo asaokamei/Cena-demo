@@ -3,7 +3,6 @@ namespace Demo\Controller;
 
 use Demo\Legacy\PageController;
 use Demo\Factory as DemoFactory;
-use Demo\Legacy\PageView;
 use Demo\Resources\Posting;
 
 class PostController extends PageController
@@ -14,12 +13,10 @@ class PostController extends PageController
     protected $posting;
 
     /**
-     * @param PageView $view
      * @param Posting  $posting
      */
-    public function __construct( $view, $posting )
+    public function setPosting( $posting )
     {
-        parent::__construct( $view );
         $this->posting = $posting;
     }
 
@@ -28,10 +25,12 @@ class PostController extends PageController
      */
     public static function factory()
     {
-        return new static(
-            new PageView(),
+        /** @var self $self */
+        $self = parent::factory();
+        $self->setPosting(
             DemoFactory::getPosting()
         );
+        return $self;
     }
 
     /**
