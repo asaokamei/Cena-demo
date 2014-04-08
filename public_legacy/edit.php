@@ -1,75 +1,22 @@
 <?php
 
-use Demo\Resources\Posting;
-use Demo\Factory as DemoFactory;
-use Demo\Legacy\PageView;
+use Cena\Cena\Utils\HtmlForms;
+use Demo\Controller\EditController;
+use Demo\Models\Comment;
+use Demo\Models\Tag;
 use Demo\Models\Post;
-use Demo\Resources\Tags;
+use Doctrine\Common\Collections\ArrayCollection;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-try {
+$controller = EditController::factory();
+$view = $controller->execute();
 
-    $id = isset( $_GET[ 'id' ] ) ? $_GET[ 'id' ] : '';
-
-    /**
-     * @var PageView $view
-     */
-    $view = call_user_func( function( $id, $input ) {
-
-        $view = new PageView();
-        $view['post']  = $posting = DemoFactory::getPosting();;
-        $view['title'] = $id ? 'Edit Post' : 'New Post';
-
-        // get post data or create a new one if no input.
-        if( !$input ) {
-            ( $id ) ?
-                $posting->onGet( $id ) :
-                $posting->onNew();
-            return $view;
-        }
-        // there is an input. i.e. post method.    
-        $posting->with( $input );
-        $success = ( $id ) ?
-            $posting->onPut( $id ) :
-            $posting->onPost();
-
-        if( $success ) {
-            $id = $posting->getPost()->getPostId();
-            header( "Location: post.php?id={$id}" );
-            exit;
-        }
-        $view->error( 'failed to process the blog post' );
-        return $view;
-
-    }, $id, $_POST );
-
-
-    /** @var Posting $posting */
-    $posting = $view['post'];
-    $post = $posting->getPost();
-    $comments = $posting->getComments();
-
-    /*
-     * preparing tags.
-     */
-    $tags = new Tags();
-    $postTag = $posting->getTags();
-
-    /*
-     * set up form helper...
-     */
-    $form = DemoFactory::getHtmlForms();
-    $form->setEntity( $post );
-    $post_form_name = $form->getFormName();
-    $post_cena_id = $form->getCenaId();
-
-
-} catch ( \Exception $e ) {
-
-    $view = new PageView();
-    $view->critical( $e->getMessage() );
-}
+$id = $view['id'];
+/** @var HtmlForms $form */
+$form = $view['form'];
+$post_form_name = $view['post_form_name'];
+$post_cena_id   = $view['post_cena_id'];
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -84,7 +31,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title: <?= $form->getErrorMsg('title') ?></dt>
-            <dd><input type="text" name="<?= $post_form_name ?>[prop][title]" class="form-control"
+            <dd><input type="text" name="<?= $view['post_form_name'] ?>[prop][title]" class="form-control"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Status:</dt>
             <dd>
@@ -118,6 +65,9 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 /*
                  * list all existing tags.
                  */
+                /** @var Tag[]|ArrayCollection $postTag */
+                $postTag = $view['postTag'];
+                $tags = $view['tags'];
                 foreach( $tags as $t ) {
 
                     $form->setEntity( $t );
@@ -151,7 +101,11 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <button type="submit" class="btn btn-primary">submit post</button>
     </div>
     
-    <?php if ( count( $comments ) > 0 ) { ?>
+    <?php
+    /** @var Comment[] $comments */
+    $comments = $view['comments'];
+    if ( count( $comments ) > 0 ) {
+        ?>
 
         <div class="comments col-md-8">
             <h2>comments...</h2>
@@ -170,7 +124,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     <input type="hidden"
                            name="<?= $form->getFormName() ?>[link][post]"
                            class="form-control"
-                           value="<?= $post_cena_id ?>">
+                           value="<?= $view['post_cena_id'] ?>">
                     
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]"
                               rows="4" class="form-control"
