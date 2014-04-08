@@ -17,7 +17,7 @@ class EditController extends PageController
         ( $id ) ?
             $posting->onGet( $id ) :
             $posting->onNew();
-        $this->setView( $posting );
+        $this->setView( $id, $posting );
     }
 
     /**
@@ -36,32 +36,28 @@ class EditController extends PageController
             $this->location( "post.php?id={$id}" );
         }
         $this->view->error( 'failed to process the blog post' );
-        $this->setView( $posting );
+        $this->setView( $id, $posting );
     }
 
 
     /**
+     * @param int|null $id
      * @param Posting $posting
      */
-    protected function setView( $posting )
+    protected function setView( $id, $posting )
     {
+        $this->view['title']    = $id ? "Edit Post: #{$id}" : "New Post";
         $this->view['id']       = $posting->getPost()->getPostId();
-        $this->view['post']     = $posting->getPost();
-        $this->view['comments'] = $posting->getComments();
+        $this->view['posting']  = $posting;
 
         /*
          * preparing tags.
          */
         $this->view['tags'] = new Tags();
-        $this->view['postTag'] = $posting->getTags();
 
         /*
          * set up form helper...
          */
-        $form = DemoFactory::getHtmlForms();
-        $form->setEntity( $posting->getPost() );
-        $this->view['form']           = $form;
-        $this->view['post_form_name'] = $form->getFormName();
-        $this->view['post_cena_id']   = $form->getCenaId();
+        $this->view['form'] = DemoFactory::getHtmlForms();
     }
 }

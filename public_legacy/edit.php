@@ -3,9 +3,9 @@
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Controller\EditController;
 use Demo\Models\Comment;
-use Demo\Models\Tag;
 use Demo\Models\Post;
-use Doctrine\Common\Collections\ArrayCollection;
+use Demo\Resources\Posting;
+use Demo\Resources\Tags;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
@@ -13,10 +13,17 @@ $controller = EditController::factory();
 $view = $controller->execute();
 
 $id = $view['id'];
+/** @var Posting $posting */
+$posting = $view['posting'];
 /** @var HtmlForms $form */
 $form = $view['form'];
-$post_form_name = $view['post_form_name'];
-$post_cena_id   = $view['post_cena_id'];
+/** @var Tags $tags */
+$tags = $view['tags'];
+
+$post = $posting->getPost();
+$form->setEntity( $post );
+$post_form_name = $form->getFormName();
+$post_cena_id   = $form->getCenaId();
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -31,7 +38,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title: <?= $form->getErrorMsg('title') ?></dt>
-            <dd><input type="text" name="<?= $view['post_form_name'] ?>[prop][title]" class="form-control"
+            <dd><input type="text" name="<?= $post_form_name ?>[prop][title]" class="form-control"
                        placeholder="title" value="<?= $form['title']; ?>"/></dd>
             <dt>Status:</dt>
             <dd>
@@ -65,9 +72,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 /*
                  * list all existing tags.
                  */
-                /** @var Tag[]|ArrayCollection $postTag */
-                $postTag = $view['postTag'];
-                $tags = $view['tags'];
+                $postTag = $posting->getTags();
                 foreach( $tags as $t ) {
 
                     $form->setEntity( $t );
@@ -103,7 +108,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
     
     <?php
     /** @var Comment[] $comments */
-    $comments = $view['comments'];
+    $comments = $posting->getComments();
     if ( count( $comments ) > 0 ) {
         ?>
 
@@ -124,7 +129,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     <input type="hidden"
                            name="<?= $form->getFormName() ?>[link][post]"
                            class="form-control"
-                           value="<?= $view['post_cena_id'] ?>">
+                           value="<?= $post_cena_id ?>">
                     
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]"
                               rows="4" class="form-control"
