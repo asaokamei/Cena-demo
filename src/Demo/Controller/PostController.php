@@ -3,10 +3,37 @@ namespace Demo\Controller;
 
 use Demo\Legacy\PageController;
 use Demo\Factory as DemoFactory;
+use Demo\Legacy\PageView;
 use Demo\Resources\Posting;
 
 class PostController extends PageController
 {
+    /**
+     * @var Posting
+     */
+    protected $posting;
+
+    /**
+     * @param PageView $view
+     * @param Posting  $posting
+     */
+    public function __construct( $view, $posting )
+    {
+        parent::__construct( $view );
+        $this->posting = $posting;
+    }
+
+    /**
+     * @return static
+     */
+    public static function factory()
+    {
+        return new static(
+            new PageView(),
+            DemoFactory::getPosting()
+        );
+    }
+
     /**
      * @param int $id
      * @throws \InvalidArgumentException
@@ -16,10 +43,9 @@ class PostController extends PageController
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
         }
-        $posting = DemoFactory::getPosting();
-        $posting->onGet( $id );
-        $posting->getNewComment();
-        $this->setView( $posting );
+        $this->posting->onGet( $id );
+        $this->posting->getNewComment();
+        $this->setView();
     }
 
     /**
@@ -31,25 +57,23 @@ class PostController extends PageController
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
         }
-        $posting = DemoFactory::getPosting();
-        $posting->with( $_POST );
-        if( $posting->onPostComment( $id ) ) {
+        $this->posting->with( $_POST );
+        if( $this->posting->onPostComment( $id ) ) {
             header( "Location: post.php?id={$id}" );
             exit;
         }
         $this->view->error( 'failed to post comment' );
-        $this->setView( $posting );
+        $this->setView();
     }
 
     /**
-     * @param Posting $posting
      */
-    protected function setView( $posting )
+    protected function setView()
     {
-        $this->view['id']       = $posting->getPost()->getPostId();
-        $this->view['post']     = $posting->getPost();
-        $this->view['comments'] = $posting->getComments();
-        $this->view['tag_list'] = $posting->getTagList();
+        $this->view['id']       = $this->posting->getPost()->getPostId();
+        $this->view['post']     = $this->posting->getPost();
+        $this->view['comments'] = $this->posting->getComments();
+        $this->view['tag_list'] = $this->posting->getTagList();
         $this->view['form']     = DemoFactory::getHtmlForms();
     }
 }
