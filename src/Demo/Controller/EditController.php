@@ -9,15 +9,40 @@ use Demo\Resources\Tags;
 class EditController extends PageController
 {
     /**
+     * @var Posting
+     */
+    protected $posting;
+
+    /**
+     * @param Posting  $posting
+     */
+    public function setPosting( $posting )
+    {
+        $this->posting = $posting;
+    }
+
+    /**
+     * @return static
+     */
+    public static function factory()
+    {
+        /** @var self $self */
+        $self = parent::factory();
+        $self->setPosting(
+            DemoFactory::getPosting()
+        );
+        return $self;
+    }
+
+    /**
      * @param int|null $id
      */
     protected function onGet( $id=null )
     {
-        $posting = DemoFactory::getPosting();
         ( $id ) ?
-            $posting->onGet( $id ) :
-            $posting->onNew();
-        $this->setView( $id, $posting );
+            $this->posting->onGet( $id ) :
+            $this->posting->onNew();
+        $this->setView( $id );
     }
 
     /**
@@ -25,30 +50,28 @@ class EditController extends PageController
      */
     protected function onPost( $id=null )
     {
-        $posting = DemoFactory::getPosting();
-        $posting->with( $_POST );
+        $this->posting->with( $_POST );
         $success = ( $id ) ?
-            $posting->onPut( $id ) :
-            $posting->onPost();
+            $this->posting->onPut( $id ) :
+            $this->posting->onPost();
 
         if( $success ) {
-            $id = $posting->getPost()->getPostId();
+            $id = $this->posting->getPost()->getPostId();
             $this->location( "post.php?id={$id}" );
         }
         $this->view->error( 'failed to process the blog post' );
-        $this->setView( $id, $posting );
+        $this->setView( $id );
     }
 
 
     /**
      * @param int|null $id
-     * @param Posting $posting
      */
-    protected function setView( $id, $posting )
+    protected function setView( $id )
     {
         $this->view['title']    = $id ? "Edit Post: #{$id}" : "New Post";
-        $this->view['id']       = $posting->getPost()->getPostId();
-        $this->view['posting']  = $posting;
+        $this->view['id']       = $this->posting->getPost()->getPostId();
+        $this->view['posting']  = $this->posting;
 
         /*
          * preparing tags.
