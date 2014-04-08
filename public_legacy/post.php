@@ -2,12 +2,45 @@
 
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Controller\PostController;
+use Demo\Factory;
 use Demo\Models\Comment;
 use Demo\Models\Post;
+use Doctrine\Common\Cache\ApcCache;
+use Ray\Di\AbstractModule;
+use Ray\Di\Injector;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$controller = PostController::factory();
+class Module extends AbstractModule
+{
+    /**
+     * Configures a Binder via the exposed methods.
+     *
+     * @return void
+     */
+    protected function configure()
+    {
+        $this->bind( '\Demo\Legacy\PageViewInterface' )->to( '\Demo\Legacy\PageView' );
+        $this->bind( '\Demo\Resources\Posting' )
+            ->annotatedWith( 'Posting' )
+            ->toInstance( Factory::getPosting());
+    }
+}
+
+if( false ) {
+    // normal DI.
+    $injector = Injector::create( [new Module()] );
+} elseif( false ) {
+    // DI using object graph in a cache.
+    $injector = function() { return new Module(); };
+    $injector = \Ray\Di\DiCompiler::create( $injector, new ApcCache, 'app-key', '/tmp' );
+} else {
+    // cache the app!
+    $injector = function() { return Injector::create( [new Module()] ); };
+    $injector = new \Ray\Di\CacheInjector( $injector, function(){}, 'caches', new ApcCache );
+}
+/** @var PostController $controller */
+$controller = $injector->getInstance('Demo\Controller\PostController' );
 $view = $controller->execute();
 
 ?>

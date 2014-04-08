@@ -6,7 +6,7 @@ namespace Demo\Legacy;
  *
  * Class PageView
  */
-class PageView implements \ArrayAccess
+class PageView implements \ArrayAccess, PageViewInterface
 {
     const ERROR    = '400';
     const CRITICAL = '500';

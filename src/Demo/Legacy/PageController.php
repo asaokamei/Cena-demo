@@ -1,6 +1,8 @@
 <?php
 namespace Demo\Legacy;
 
+use Ray\Di\Di\Inject;
+
 /**
  * A simple page-based controller.
  * should have done a lot more, such as...
@@ -10,7 +12,7 @@ namespace Demo\Legacy;
  * Class PageController
  * @package Demo\Legacy
  */
-class PageController
+class PageController implements PageControllerInterface
 {
     /**
      * @var PageView
@@ -18,9 +20,10 @@ class PageController
     protected $view;
 
     /**
-     * @param PageView $view
+     * @Inject
+     * @param \Demo\Legacy\PageViewInterface $view
      */
-    public function __construct( $view )
+    public function __construct( \Demo\Legacy\PageViewInterface $view )
     {
         $this->view = $view;
     }

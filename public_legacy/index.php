@@ -2,10 +2,39 @@
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Controller\IndexController;
 use Demo\Models\PostList;
+use Doctrine\Common\Cache\ApcCache;
+use Ray\Di\AbstractModule;
+use Ray\Di\Injector;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-$controller = IndexController::factory();
+class Module extends AbstractModule
+{
+    /**
+     * Configures a Binder via the exposed methods.
+     *
+     * @return void
+     */
+    protected function configure()
+    {
+        $this->bind( '\Demo\Legacy\PageViewInterface' )->to( '\Demo\Legacy\PageView' );
+    }
+}
+
+if( true ) {
+    // normal DI.
+    $injector = Injector::create( [new Module()] );
+} elseif( false ) {
+    // DI using object graph in a cache.
+    $injector = function() { return new Module(); };
+    $injector = \Ray\Di\DiCompiler::create( $injector, new ApcCache, 'app-key', '/tmp' );
+} else {
+    // cache the app!
+    $injector = function() { return Injector::create( [new Module()] ); };
+    $injector = new \Ray\Di\CacheInjector( $injector, function(){}, 'caches', new ApcCache );
+}
+/** @var IndexController $controller */
+$controller = $injector->getInstance('Demo\Controller\IndexController' );
 $view = $controller->execute( 'act' );
 
 ?>

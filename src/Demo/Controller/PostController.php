@@ -1,6 +1,8 @@
 <?php
 namespace Demo\Controller;
 
+use Ray\Di\Di\Inject;
+use Ray\Di\Di\Named;
 use Demo\Legacy\PageController;
 use Demo\Factory as DemoFactory;
 use Demo\Resources\Posting;
@@ -13,9 +15,11 @@ class PostController extends PageController
     protected $posting;
 
     /**
+     * @Inject
+     * @Named("posting=Posting")
      * @param Posting  $posting
      */
-    public function setPosting( $posting )
+    public function setPosting( \Demo\Resources\Posting $posting )
     {
         $this->posting = $posting;
     }
