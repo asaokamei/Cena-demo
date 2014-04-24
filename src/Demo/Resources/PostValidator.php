@@ -11,4 +11,15 @@ class PostValidator extends SimpleValidatorAbstract
         $this->required( 'publishAt' );
         $this->required( 'content' );
     }
+
+    /**
+     * verify that the entity is valid.
+     *
+     * @return void
+     */
+    public function verify()
+    {
+        $this->useAsInput( $this->entity );
+        $this->validate();
+    }
 }

@@ -12,7 +12,7 @@ class TagValidator extends SimpleValidatorAbstract
 
     public function verify()
     {
-        $this->useAsInput( 'tag', $this->entity->getTag() );
+        $this->useAsInput( $this->entity );
         $this->validate();
     }
 }

@@ -9,4 +9,15 @@ class CommentValidator extends SimpleValidatorAbstract
     {
         $this->required( 'comment' );
     }
+
+    /**
+     * verify that the entity is valid.
+     *
+     * @return void
+     */
+    public function verify()
+    {
+        $this->useAsInput( $this->entity );
+        $this->validate();
+    }
 }
