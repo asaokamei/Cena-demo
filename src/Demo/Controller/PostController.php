@@ -45,13 +45,7 @@ class PostController extends PageController
         $this->posting->onGet( $id );
         $this->posting->getNewComment();
         $this->pushToken();
-        if( $message = $this->session->get('message') ) {
-            if( $this->session->get('error') ) {
-                $this->view->error($message);
-            } else {
-                $this->view->message($message);
-            }
-        }
+        $this->setFlashMessage();
         $this->setView();
     }
 
@@ -67,14 +61,12 @@ class PostController extends PageController
         }
         $this->posting->with( array('Cena'=>$Cena) );
         if( !$this->verifyToken() ) {
-            $this->session->flash( 'message', 'invalid token.' );
-            $this->session->flash( 'error',   'true' );
+            $this->flashError( 'invalid token.' );
         }
         elseif( $this->posting->onPostComment( $id ) ) {
-            $this->session->flash( 'message', 'add a comment.' );
+            $this->flashMessage( 'added a comment.' );
         } else {
-            $this->session->flash( 'message', 'failed to post comment.' );
-            $this->session->flash( 'error',   'true' );
+            $this->flashError( 'failed to post comment.' );
         }
         header( "Location: post.php?id={$id}" );
         exit;

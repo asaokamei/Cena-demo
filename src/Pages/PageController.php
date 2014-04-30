@@ -27,6 +27,9 @@ class PageController
      */
     protected $session;
 
+    // +----------------------------------------------------------------------+
+    //  construction of controller
+    // +----------------------------------------------------------------------+
     /**
      * @param PageRequest $req
      * @param PageView    $view
@@ -51,6 +54,9 @@ class PageController
         );
     }
 
+    // +----------------------------------------------------------------------+
+    //  other helpers.
+    // +----------------------------------------------------------------------+
     /**
      * @param string $url
      */
@@ -60,6 +66,9 @@ class PageController
         exit;
     }
 
+    // +----------------------------------------------------------------------+
+    //  csrf tokens
+    // +----------------------------------------------------------------------+
     /**
      * 
      */
@@ -81,6 +90,44 @@ class PageController
         return true;
     }
 
+    // +----------------------------------------------------------------------+
+    //  flash messages
+    // +----------------------------------------------------------------------+
+    /**
+     * @param $message
+     */
+    protected function flashMessage( $message )
+    {
+        $this->session->flash( 'flash-message', $message );
+        $this->session->flash( 'flash-error',   false );
+    }
+
+    /**
+     * @param $message
+     */
+    protected function flashError( $message )
+    {
+        $this->session->flash( 'flash-message', $message );
+        $this->session->flash( 'flash-error',   true );
+    }
+
+    /**
+     * 
+     */
+    protected function setFlashMessage()
+    {
+        if( $message = $this->session->get('flash-message') ) {
+            if( $this->session->get('flash-error') ) {
+                $this->view->error($message);
+            } else {
+                $this->view->message($message);
+            }
+        }
+    }
+
+    // +----------------------------------------------------------------------+
+    //  execution of controllers. 
+    // +----------------------------------------------------------------------+
     /**
      * @param $execMethod
      * @return array
@@ -122,4 +169,5 @@ class PageController
         }
         return $this->view;
     }
+    // +----------------------------------------------------------------------+
 }
