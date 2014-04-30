@@ -1,5 +1,5 @@
 <?php
-namespace Demo\Legacy;
+namespace WScore\Pages;
 
 /**
  * manages the state of a page (i.e. view).

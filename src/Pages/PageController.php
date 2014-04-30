@@ -1,5 +1,5 @@
 <?php
-namespace Demo\Legacy;
+namespace WScore\Pages;
 
 /**
  * A simple page-based controller.

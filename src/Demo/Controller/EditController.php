@@ -1,7 +1,7 @@
 <?php
 namespace Demo\Controller;
 
-use Demo\Legacy\PageController;
+use WScore\Pages\PageController;
 use Demo\Factory as DemoFactory;
 use Demo\Resources\Posting;
 use Demo\Resources\Tags;
