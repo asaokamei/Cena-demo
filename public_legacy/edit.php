@@ -9,7 +9,7 @@ use Demo\Resources\Tags;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$controller = EditController::factory();
+$controller = EditController::getInstance();
 $view = $controller->execute();
 
 $id = $view['id'];

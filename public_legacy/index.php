@@ -5,7 +5,7 @@ use Demo\Models\PostList;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-$controller = IndexController::factory();
+$controller = IndexController::getInstance();
 $view = $controller->execute( 'act' );
 
 ?>

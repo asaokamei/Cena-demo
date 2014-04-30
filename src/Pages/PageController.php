@@ -35,7 +35,7 @@ class PageController
     /**
      * @return static
      */
-    public static function factory()
+    public static function getInstance()
     {
         return new static(
             new PageRequest(),

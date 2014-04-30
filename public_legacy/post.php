@@ -7,7 +7,7 @@ use Demo\Models\Post;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$controller = PostController::factory();
+$controller = PostController::getInstance();
 $view = $controller->execute();
 
 ?>

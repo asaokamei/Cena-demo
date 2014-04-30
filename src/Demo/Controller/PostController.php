@@ -23,10 +23,10 @@ class PostController extends PageController
     /**
      * @return static
      */
-    public static function factory()
+    public static function getInstance()
     {
         /** @var self $self */
-        $self = parent::factory();
+        $self = parent::getInstance();
         $self->setPosting(
             DemoFactory::getPosting()
         );
