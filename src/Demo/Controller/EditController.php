@@ -42,6 +42,8 @@ class EditController extends PageController
         ( $id ) ?
             $this->posting->onGet( $id ) :
             $this->posting->onNew();
+        $this->pushToken();
+        $this->setFlashMessage();
         $this->setView( $id );
     }
 
@@ -51,15 +53,19 @@ class EditController extends PageController
     protected function onPost( $id=null )
     {
         $this->posting->with( $_POST );
-        $success = ( $id ) ?
+        if( !$this->verifyToken() ) {
+            $this->flashError( 'invalid token.' );
+            $this->location( "post.php?id={$id}" );
+        }
+        elseif( $success = ( $id ) ?
             $this->posting->onPut( $id ) :
-            $this->posting->onPost();
-
-        if( $success ) {
+            $this->posting->onPost() )
+        {
             $id = $this->posting->getPost()->getPostId();
             $this->location( "post.php?id={$id}" );
         }
         $this->view->error( 'failed to process the blog post' );
+        $this->pushToken();
         $this->setView( $id );
     }
 

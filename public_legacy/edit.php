@@ -33,6 +33,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
 ?>
 <form name="postForm" method="post" action="edit.php?id=<?= $id; ?>">
     
+    <?= $view->getHidden('_token'); ?>
     <div class="post col-md-12">
         <h1><?= $view['title']; ?></h1>
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
