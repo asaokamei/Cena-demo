@@ -18,10 +18,17 @@ class PageController
     protected $view;
 
     /**
+     * @var PageRequest
+     */
+    protected $request;
+
+    /**
+     * @param PageRequest $req
      * @param PageView $view
      */
-    public function __construct( $view )
+    public function __construct( $req, $view )
     {
+        $this->request = $req;
         $this->view = $view;
     }
 
@@ -31,33 +38,9 @@ class PageController
     public static function factory()
     {
         return new static(
+            new PageRequest(),
             new PageView()
         );
-    }
-
-    /**
-     * @param $string
-     * @return null|string
-     */
-    protected function safeString( $string )
-    {
-        if( !mb_check_encoding( $string, 'UTF-8' ) ) {
-            return null;
-        }
-        return $string;
-    }
-
-    /**
-     * @param $code
-     * @return null|string
-     */
-    protected function safeCode( $code )
-    {
-        $code = $this->safeString( $code );
-        if( preg_match( '/^[-_0-9a-zA-Z]*$/', $code ) ) {
-            return $code;
-        }
-        return null;
     }
 
     /**
@@ -67,24 +50,6 @@ class PageController
     {
         header( "Location: {$url}" );
         exit;
-    }
-
-    /**
-     * @param null|string $name
-     * @return string
-     */
-    public function getMethod( $name=null )
-    {
-        if( $name && isset( $_REQUEST[$name ] ) ) {
-            $method = $this->safeCode( $_REQUEST[$name ] );
-        }
-        elseif( isset( $_REQUEST['_method' ] ) ) {
-            $method = $this->safeCode( $_REQUEST['_method' ] );
-        } else {
-            $method = $_SERVER['REQUEST_METHOD'];
-        }
-        $method = strtolower( $method );
-        return $this->safeCode( $method );
     }
 
     /**
@@ -99,7 +64,8 @@ class PageController
         foreach( $args as $arg ) {
             $key  = $arg->getPosition();
             $name = $arg->getName();
-            $val  = isset($_REQUEST[$name]) ? $_REQUEST[$name]: $arg->getDefaultValue();
+            $opt  = $arg->isOptional() ? $arg->getDefaultValue() : null;
+            $val  = $this->request->get( $name, $opt );
             $list[$key] = $val;
         }
         $ref->setAccessible(true);
@@ -110,9 +76,9 @@ class PageController
      * @param null|string $method
      * @return PageView
      */
-    public function execute( $method=null )
+    public function execute( $method='_method' )
     {
-        $method = $this->getMethod( $method );
+        $method = $this->request->getMethod( $method );
         $execMethod = 'on' . ucwords( $method );
 
         try {
