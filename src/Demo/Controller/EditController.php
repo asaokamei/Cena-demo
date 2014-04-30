@@ -49,15 +49,16 @@ class EditController extends PageController
 
     /**
      * @param int|null $id
+     * @param null|array  $Cena
      */
-    protected function onPost( $id=null )
+    protected function onPost( $id=null, $Cena=null )
     {
-        $this->posting->with( $_POST );
+        $this->posting->with( array('Cena'=>$Cena) );
         if( !$this->verifyToken() ) {
             $this->flashError( 'invalid token.' );
             $this->location( "post.php?id={$id}" );
         }
-        elseif( $success = ( $id ) ?
+        elseif( ( $id ) ?
             $this->posting->onPut( $id ) :
             $this->posting->onPost() )
         {
