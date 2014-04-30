@@ -57,26 +57,25 @@ class PostController extends PageController
 
     /**
      * @param int $id
+     * @param array $Cena
      * @throws \InvalidArgumentException
      */
-    protected function onPost( $id )
+    protected function onPost( $id, $Cena )
     {
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
         }
+        $this->posting->with( array('Cena'=>$Cena) );
         if( !$this->verifyToken() ) {
             $this->session->flash( 'message', 'invalid token.' );
             $this->session->flash( 'error',   'true' );
-            header( "Location: post.php?id={$id}" );
-            exit;
         }
-        $this->posting->with( $_POST );
-        if( $this->posting->onPostComment( $id ) ) {
-            header( "Location: post.php?id={$id}" );
-            exit;
+        elseif( $this->posting->onPostComment( $id ) ) {
+            $this->session->flash( 'message', 'add a comment.' );
+        } else {
+            $this->session->flash( 'message', 'failed to post comment.' );
+            $this->session->flash( 'error',   'true' );
         }
-        $this->session->flash( 'message', 'failed to post comment.' );
-        $this->session->flash( 'error',   'true' );
         header( "Location: post.php?id={$id}" );
         exit;
     }
