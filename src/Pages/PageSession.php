@@ -27,7 +27,7 @@ class PageSession
     /**
      * @return static
      */
-    public function getInstance()
+    public static function getInstance()
     {
         if( !isset( $_SESSION ) ) {
             session_start();

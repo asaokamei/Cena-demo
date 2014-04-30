@@ -40,6 +40,18 @@ class PageView implements \ArrayAccess
     }
 
     /**
+     * @param string $key
+     * @return string
+     */
+    function getHidden( $key )
+    {
+        if( $value = $this->get( $key ) ) {
+            return "<input type=\"hidden\" name=\"{$key}\" value=\"{$value}\" />";
+        }
+        return '';
+    }
+
+    /**
      * @param $key
      * @return array|null
      */
@@ -60,7 +72,7 @@ class PageView implements \ArrayAccess
     {
         if( !$method = $this->get( '_method' ) ) return null;
         if( $tag ) {
-            $method = "<input type=\"hidden\" name=\"_method\" value=\"{$method}\" />";
+            $method = $this->getHidden( '_method' );
         }
         return $method;
     }

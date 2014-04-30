@@ -56,6 +56,7 @@ $form->setEntity( $post );
             <!-- show a form to add a new comment -->
             <div class="form-group<?php if( $form->isError() ) { echo ' has-error'; } ?>">
                 <form name="addPost" method="post" action="post.php?id=<?= $view['id']; ?>" >
+                    <?= $view->getHidden('_token'); ?>
                     <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
                     <?php if( $msg = $form->getError('comment') ) { echo "<span class=\"error-msg\">$msg</span>"; } ?>
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>

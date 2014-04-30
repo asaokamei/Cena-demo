@@ -23,13 +23,20 @@ class PageController
     protected $request;
 
     /**
-     * @param PageRequest $req
-     * @param PageView $view
+     * @var PageSession
      */
-    public function __construct( $req, $view )
+    protected $session;
+
+    /**
+     * @param PageRequest $req
+     * @param PageView    $view
+     * @param null|PageSession  $session
+     */
+    public function __construct( $req, $view, $session=null )
     {
         $this->request = $req;
         $this->view = $view;
+        $this->session = $session;
     }
 
     /**
@@ -39,7 +46,8 @@ class PageController
     {
         return new static(
             new PageRequest(),
-            new PageView()
+            new PageView(),
+            PageSession::getInstance()
         );
     }
 
@@ -50,6 +58,27 @@ class PageController
     {
         header( "Location: {$url}" );
         exit;
+    }
+
+    /**
+     * 
+     */
+    protected function pushToken()
+    {
+        $token = $this->session->pushToken();
+        $this->view->set( PageSession::TOKEN_ID, $token );
+    }
+
+    /**
+     * @return bool
+     */
+    protected function verifyToken()
+    {
+        $token = $this->request->getCode( PageSession::TOKEN_ID );
+        if( !$this->session->verifyToken( $token ) ) {
+            return false;
+        }
+        return true;
     }
 
     /**

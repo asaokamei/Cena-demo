@@ -44,6 +44,14 @@ class PostController extends PageController
         }
         $this->posting->onGet( $id );
         $this->posting->getNewComment();
+        $this->pushToken();
+        if( $message = $this->session->get('message') ) {
+            if( $this->session->get('error') ) {
+                $this->view->error($message);
+            } else {
+                $this->view->message($message);
+            }
+        }
         $this->setView();
     }
 
@@ -56,13 +64,21 @@ class PostController extends PageController
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
         }
+        if( !$this->verifyToken() ) {
+            $this->session->flash( 'message', 'invalid token.' );
+            $this->session->flash( 'error',   'true' );
+            header( "Location: post.php?id={$id}" );
+            exit;
+        }
         $this->posting->with( $_POST );
         if( $this->posting->onPostComment( $id ) ) {
             header( "Location: post.php?id={$id}" );
             exit;
         }
-        $this->view->error( 'failed to post comment' );
-        $this->setView();
+        $this->session->flash( 'message', 'failed to post comment.' );
+        $this->session->flash( 'error',   'true' );
+        header( "Location: post.php?id={$id}" );
+        exit;
     }
 
     /**
