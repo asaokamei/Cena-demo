@@ -81,4 +81,32 @@ class PageRequest
         return $this->safeCode( $method );
     }
 
+    /**
+     * @param null|string $ua
+     * @return bool
+     */
+    public function isMobile( $ua=null )
+    {
+        $ua = $ua ?: $_SERVER['HTTP_USER_AGENT'];
+        if( false!==strpos( $ua, 'iPhone' ) ) return true; // iPhone
+        if( false !== strpos( $ua, 'Android' ) && false!==strpos( $ua, 'Mobile' ) ) {
+            return true; // android phone.
+        }
+        if( false!==strpos( $ua, 'Windows Phone' ) ) return true; // Windows Phone
+        return false;
+    }
+
+    /**
+     * @param null|string $ua
+     * @return bool
+     */
+    public function isTablet( $ua=null )
+    {
+        $ua = $ua ?: $_SERVER['HTTP_USER_AGENT'];
+        if( false!==strpos( $ua, 'iPad' ) ) return true; // iPad
+        if( false !== strpos( $ua, 'Android' ) && false===strpos( $ua, 'Mobile' ) ) {
+            return true; // android tablet.
+        }
+        return false;
+    }
 }
