@@ -15,6 +15,20 @@ class PageView implements \ArrayAccess
     protected $message = '';
     protected $data    = array();
 
+    protected $location;
+
+    // +----------------------------------------------------------------------+
+    //  Response and locations
+    // +----------------------------------------------------------------------+
+    /**
+     * @param string $url
+     */
+    public function location( $url )
+    {
+        header( "Location: {$url}" );
+        exit;
+    }
+
     // +----------------------------------------------------------------------+
     //  managing variables
     // +----------------------------------------------------------------------+

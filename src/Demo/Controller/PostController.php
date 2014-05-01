@@ -68,8 +68,7 @@ class PostController extends PageController
         } else {
             $this->flashError( 'failed to post comment.' );
         }
-        header( "Location: post.php?id={$id}" );
-        exit;
+        $this->view->location( "post.php?id={$id}" );
     }
 
     /**

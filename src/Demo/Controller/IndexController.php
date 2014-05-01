@@ -23,7 +23,7 @@ class IndexController extends PageController
     protected function onSample()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/sample-db.php' );
-        $this->location('index.php');
+        $this->view->location('index.php');
     }
 
     /**
@@ -32,6 +32,6 @@ class IndexController extends PageController
     protected function onSetup()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/setup-db.php' );
-        $this->location('index.php');
+        $this->view->location('index.php');
     }
 }
