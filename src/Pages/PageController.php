@@ -3,9 +3,6 @@ namespace WScore\Pages;
 
 /**
  * A simple page-based controller.
- * should have done a lot more, such as...
- * - add CSRF token,
- * - use Request class.
  *
  * Class PageController
  * @package Demo\Legacy
@@ -55,7 +52,7 @@ class PageController
     }
 
     // +----------------------------------------------------------------------+
-    //  csrf tokens
+    //  C.S.R.F. tokens
     // +----------------------------------------------------------------------+
     /**
      * 
