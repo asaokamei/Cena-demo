@@ -58,8 +58,8 @@ $form->setEntity( $post );
             <div class="form-group<?php if( $form->isError() ) { echo ' has-error'; } ?>">
                 <form name="addPost" method="post" action="post.php?id=<?= $view['id']; ?>" >
                     <?= $view->getHidden('_token'); ?>
-                    <input type="hidden" name="<?= $form->getFormName()?>[link][post]" value="<?= $post_cena_id; ?>">
-                    <?php if( $msg = $form->getError('comment') ) { echo "<span class=\"error-msg\">$msg</span>"; } ?>
+                    <?= $form->link( 'post', $post ); ?>
+                    <?= $form->getErrorMsg('comment'); ?>
                     <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
                     <button type="submit" class="btn btn-info btn-sm">add comment</button>
                 </form>
