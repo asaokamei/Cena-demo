@@ -69,12 +69,10 @@ if( $view->isCritical() ) goto Html_Page_footer;
                     $form->setEntity( $t );
                     /** @noinspection PhpUnusedParameterInspection */
                     $checked = $postTag->exists(
-                        function($k,$e) use($t){ return $t==$e;} ) ? ' checked="checked"' : '';
+                        function($k,$e) use($t){ return $t==$e;} ) ? true : false;
                     ?>
                     <label>
-                        <input type="checkbox"
-                               name="<?= $post_form_name ?>[link][tags][]"
-                               value="<?= $form->getCenaId() ?>" <?= $checked ?> />
+                        <?= $form->linkReverse( 'tags][', $post, ['checked'=>$checked], 'checkbox' ); ?>
                         <?= $form['tag'] ?>
                         <?= $form->getError('tag');?>
                     </label>
@@ -84,13 +82,9 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 $form->setEntity( $tags->getNewTag() );
                 ?>
                 <label>
-                    <input type="checkbox"
-                           name="<?= $post_form_name ?>[link][tags][]"
-                           value="<?= $form->getCenaId() ?>" />
-                    <input type="text"
-                           name="<?= $form->getFormName() ?>[prop][tag]" value=""
-                           placeholder="new tag..." class="form-control" width="200px">
-                    <?= $form->getError('tag');?>
+                    <?= $form->linkReverse( 'tags][', $post, [], 'checkbox' ); ?>
+                    <?= $form->text( 'tag', ['width'=>'200px','placeholder'=>'add new tag'] );?>
+                    <?= $form->getErrorMsg('tag');?>
                 </label>
             </dd>
         </dl>
