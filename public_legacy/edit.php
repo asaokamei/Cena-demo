@@ -25,6 +25,7 @@ $post = $posting->getPost();
 $form->setEntity( $post );
 $post_form_name = $form->getFormName();
 $post_cena_id   = $form->getCenaId();
+$form->setHtmlOptions( 'class', 'form-control' );
 
 ?>
 <?php include( __DIR__ . '/menu/header.php' ); ?>
@@ -41,7 +42,7 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <dl>
             <dt>Title: <?= $form->getErrorMsg('title') ?></dt>
             <dd><?= $form->text('title',
-                    ['class'=>'form-control', 'placeholder'=>'title of this blog'] ); ?></dd>
+                    ['placeholder'=>'title of this blog'] ); ?></dd>
             <dt>Status:</dt>
             <dd>
                 <label><?= $form->radio('status', Post::STATUS_PREVIEW ); ?>Preview</label>
@@ -51,11 +52,11 @@ if( $view->isCritical() ) goto Html_Page_footer;
             
             <dt>Publish At:  <?= $form->getErrorMsg('publishAt') ?></dt>
             <dd><?= $form->dateTime( 'publishAt',
-                    ['class'=>'form-control', 'style'=>'width:250px'] ); ?></dd>
+                    ['style'=>'width:250px'] ); ?></dd>
             
             <dt>Content:  <?= $form->getErrorMsg('content') ?></dt>
             <dd><?= $form->textArea('content',
-                    [ 'rows'=>'10', 'class'=>'form-control', 'placeholder'=>'content here in markdown'] ); ?></dd>
+                    [ 'rows'=>'10', 'placeholder'=>'content here in markdown'] ); ?></dd>
             <dt>Tags:</dt>
             <dd>
                 <?php
@@ -116,20 +117,13 @@ if( $view->isCritical() ) goto Html_Page_footer;
                 <hr>
                 <div class="comment">
                     <?= $form->getErrorMsg('comment') ?>
-                    <input type="hidden"
-                           name="<?= $form->getFormName() ?>[link][post]"
-                           class="form-control"
-                           value="<?= $post_cena_id ?>">
-                    
-                    <textarea name="<?= $form->getFormName() ?>[prop][comment]"
-                              rows="4" class="form-control"
-                              placeholder="comment here..."><?= $form['comment']; ?></textarea>
+                    <?= $form->link( 'post', $post_cena_id ); ?>
+                    <?= $form->textArea( 'comment',
+                        ['rows'=>4, 'placeholder'=>'comment here...'] ); ?>
+
                     <label>
                         to delete, check this:
-                        <input type="checkbox"
-                            <?= $form->checkIf( $form->isDeleted() ); ?>
-                               name="<?= $form->getFormName() ?>[del]"
-                               value="<?= $post_cena_id ?>">
+                        <?= $form->deleteMeCheck(); ?>
                     </label>
                 </div>
             <?php } ?>
