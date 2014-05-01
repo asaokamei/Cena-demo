@@ -60,7 +60,7 @@ $form->setEntity( $post );
                     <?= $view->getHidden('_token'); ?>
                     <?= $form->link( 'post', $post ); ?>
                     <?= $form->getErrorMsg('comment'); ?>
-                    <textarea name="<?= $form->getFormName() ?>[prop][comment]" placeholder="comment here..." class="form-control"></textarea>
+                    <?= $form->textArea( 'comment', ['placeholder'=>"comment here...", 'class'=>"form-control"] ); ?>
                     <button type="submit" class="btn btn-info btn-sm">add comment</button>
                 </form>
             </div>
