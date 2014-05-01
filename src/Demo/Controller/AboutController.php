@@ -1,9 +1,9 @@
 <?php
 namespace Demo\Controller;
 
-use WScore\Pages\PageController;
+use WScore\Pages\ControllerAbstract;
 
-class AboutController extends PageController
+class AboutController extends ControllerAbstract
 {
     public function onGet()
     {

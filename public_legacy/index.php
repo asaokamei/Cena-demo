@@ -2,10 +2,11 @@
 use Cena\Cena\Utils\HtmlForms;
 use Demo\Controller\IndexController;
 use Demo\Models\PostList;
+use WScore\Pages\Dispatch;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-$controller = IndexController::getInstance();
+$controller = Dispatch::getInstance( new IndexController() );
 $view = $controller->execute( 'act' );
 
 ?>

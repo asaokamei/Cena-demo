@@ -6,10 +6,11 @@ use Demo\Models\Comment;
 use Demo\Models\Post;
 use Demo\Resources\Posting;
 use Demo\Resources\Tags;
+use WScore\Pages\Dispatch;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$controller = EditController::getInstance();
+$controller = Dispatch::getInstance( EditController::getInstance() );
 $view = $controller->execute();
 
 $id = $view['id'];

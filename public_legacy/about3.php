@@ -1,9 +1,10 @@
 <?php
 use Demo\Controller\AboutController;
+use WScore\Pages\Dispatch;
 
 require_once( dirname(__DIR__) . '/autoload.php' );
 
-$controller = AboutController::getInstance();
+$controller = Dispatch::getInstance( new AboutController() );
 $view = $controller->execute();
 
 ?>

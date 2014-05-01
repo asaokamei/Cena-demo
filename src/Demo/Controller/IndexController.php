@@ -1,15 +1,15 @@
 <?php
 namespace Demo\Controller;
 
-use WScore\Pages\PageController;
+use WScore\Pages\ControllerAbstract;
 use Demo\Factory as DemoFactory;
 
-class IndexController extends PageController
+class IndexController extends ControllerAbstract
 {
     /**
      * get list of posts.
      */
-    protected function onGet()
+    public function onGet()
     {
         $em = DemoFactory::getEntityManager();
         $query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
@@ -20,7 +20,7 @@ class IndexController extends PageController
     /**
      * create sample blog posts.
      */
-    protected function onSample()
+    public function onSample()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/sample-db.php' );
         $this->view->location('index.php');
@@ -29,7 +29,7 @@ class IndexController extends PageController
     /**
      * set up database; drop and create tables.
      */
-    protected function onSetup()
+    public function onSetup()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/setup-db.php' );
         $this->view->location('index.php');

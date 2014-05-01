@@ -1,12 +1,12 @@
 <?php
 namespace Demo\Controller;
 
-use WScore\Pages\PageController;
+use WScore\Pages\ControllerAbstract;
 use Demo\Factory as DemoFactory;
 use Demo\Resources\Posting;
 use Demo\Resources\Tags;
 
-class EditController extends PageController
+class EditController extends ControllerAbstract
 {
     /**
      * @var Posting
@@ -27,7 +27,7 @@ class EditController extends PageController
     public static function getInstance()
     {
         /** @var self $self */
-        $self = parent::getInstance();
+        $self = new self();
         $self->setPosting(
             DemoFactory::getPosting()
         );

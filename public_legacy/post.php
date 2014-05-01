@@ -4,10 +4,11 @@ use Cena\Cena\Utils\HtmlForms;
 use Demo\Controller\PostController;
 use Demo\Models\Comment;
 use Demo\Models\Post;
+use WScore\Pages\Dispatch;
 
 include( dirname(__DIR__) . '/autoload.php' );
 
-$controller = PostController::getInstance();
+$controller = Dispatch::getInstance( PostController::getInstance() );
 $view = $controller->execute();
 
 ?>

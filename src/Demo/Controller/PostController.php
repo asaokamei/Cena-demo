@@ -1,11 +1,11 @@
 <?php
 namespace Demo\Controller;
 
-use WScore\Pages\PageController;
+use WScore\Pages\ControllerAbstract;
 use Demo\Factory as DemoFactory;
 use Demo\Resources\Posting;
 
-class PostController extends PageController
+class PostController extends ControllerAbstract
 {
     /**
      * @var Posting
@@ -26,7 +26,7 @@ class PostController extends PageController
     public static function getInstance()
     {
         /** @var self $self */
-        $self = parent::getInstance();
+        $self = new self();
         $self->setPosting(
             DemoFactory::getPosting()
         );
@@ -37,7 +37,7 @@ class PostController extends PageController
      * @param int $id
      * @throws \InvalidArgumentException
      */
-    protected function onGet( $id )
+    public function onGet( $id )
     {
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
@@ -54,7 +54,7 @@ class PostController extends PageController
      * @param array $Cena
      * @throws \InvalidArgumentException
      */
-    protected function onPost( $id, $Cena )
+    public function onPost( $id, $Cena )
     {
         if( !isset( $id ) ) {
             throw new \InvalidArgumentException('please indicate post # to view. ');
@@ -73,7 +73,7 @@ class PostController extends PageController
 
     /**
      */
-    protected function setView()
+    public function setView()
     {
         $this->view['id']       = $this->posting->getPost()->getPostId();
         $this->view['post']     = $this->posting->getPost();

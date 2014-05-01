@@ -1,13 +1,7 @@
 <?php
 namespace WScore\Pages;
 
-/**
- * A simple page-based controller.
- *
- * Class PageController
- * @package Demo\Legacy
- */
-class PageController
+abstract class ControllerAbstract
 {
     /**
      * @var PageView
@@ -25,37 +19,22 @@ class PageController
     protected $session;
 
     // +----------------------------------------------------------------------+
-    //  construction of controller
+    //  Dependency Injection point.
     // +----------------------------------------------------------------------+
     /**
-     * @param PageRequest $req
-     * @param PageView    $view
-     * @param null|PageSession  $session
+     * @param string $name
+     * @param object $object
      */
-    public function __construct( $req, $view, $session=null )
+    public function inject( $name, $object )
     {
-        $this->request = $req;
-        $this->view = $view;
-        $this->session = $session;
-    }
-
-    /**
-     * @return static
-     */
-    public static function getInstance()
-    {
-        return new static(
-            new PageRequest(),
-            new PageView(),
-            PageSession::getInstance()
-        );
+        $this->$name = $object;
     }
 
     // +----------------------------------------------------------------------+
     //  C.S.R.F. tokens
     // +----------------------------------------------------------------------+
     /**
-     * 
+     *
      */
     protected function pushToken()
     {
@@ -97,7 +76,7 @@ class PageController
     }
 
     /**
-     * 
+     *
      */
     protected function setFlashMessage()
     {
@@ -110,49 +89,5 @@ class PageController
         }
     }
 
-    // +----------------------------------------------------------------------+
-    //  execution of controllers. 
-    // +----------------------------------------------------------------------+
-    /**
-     * @param $execMethod
-     * @return array
-     */
-    protected function execMethod( $execMethod )
-    {
-        $ref  = new \ReflectionMethod( $this, $execMethod );
-        $args = $ref->getParameters();
-        $list = array();
-        foreach( $args as $arg ) {
-            $key  = $arg->getPosition();
-            $name = $arg->getName();
-            $opt  = $arg->isOptional() ? $arg->getDefaultValue() : null;
-            $val  = $this->request->get( $name, $opt );
-            $list[$key] = $val;
-        }
-        $ref->setAccessible(true);
-        $ref->invokeArgs( $this, $list );
-    }
-
-    /**
-     * @param null|string $method
-     * @return PageView
-     */
-    public function execute( $method='_method' )
-    {
-        $method = $this->request->getMethod( $method );
-        $execMethod = 'on' . ucwords( $method );
-
-        try {
-
-            if( !method_exists( $this, $execMethod ) ) {
-                throw new \RuntimeException( 'no method: ' . $method );
-            }
-            $this->execMethod( $execMethod );
-
-        } catch( \Exception $e ) {
-            $this->view->critical( $e->getMessage() );
-        }
-        return $this->view;
-    }
     // +----------------------------------------------------------------------+
 }

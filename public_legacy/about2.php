@@ -1,14 +1,16 @@
 <?php
 use Demo\Controller\AboutController;
+use WScore\Pages\Dispatch;
 
 // dumb require_once files...
 require_once( dirname(__DIR__) . '/src/Pages/PageView.php' );
 require_once( dirname(__DIR__) . '/src/Pages/PageRequest.php' );
 require_once( dirname(__DIR__) . '/src/Pages/PageSession.php' );
-require_once( dirname(__DIR__) . '/src/Pages/PageController.php' );
+require_once( dirname(__DIR__) . '/src/Pages/Dispatch.php' );
+require_once( dirname(__DIR__) . '/src/Pages/ControllerAbstract.php' );
 require_once( dirname(__DIR__) . '/src/Demo/Controller/AboutController.php' );
 
-$controller = AboutController::getInstance();
+$controller = Dispatch::getInstance( new AboutController() );
 $view = $controller->execute();
 
 ?>
