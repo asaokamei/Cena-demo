@@ -18,23 +18,50 @@ abstract class ControllerAbstract
      */
     protected $session;
 
+    /**
+     * @var object[]
+     */
+    protected $modules = array();
+
     // +----------------------------------------------------------------------+
-    //  Dependency Injection point.
+    //  generic helpers
     // +----------------------------------------------------------------------+
     /**
+     * magic methods to call method in a sub-module.
+     *
+     * @param string $method
+     * @param array $args
+     * @throws \RuntimeException
+     * @return mixed
+     */
+    public function __call( $method, $args )
+    {
+        foreach( $this->modules as $object )
+        {
+            if( method_exists( $object, $method ) ) {
+                return call_user_func_array( [$object,$method], $args );
+            }
+        }
+        throw new \RuntimeException( "cannot find method: {$method} in Sub-Modules." );
+    }
+
+    /**
+     * Dependency Injection point.
+     *
      * @param string $name
      * @param object $object
      */
     public function inject( $name, $object )
     {
         $this->$name = $object;
+        $this->modules[ $name ] = $object;
     }
 
     // +----------------------------------------------------------------------+
     //  C.S.R.F. tokens
     // +----------------------------------------------------------------------+
     /**
-     *
+     * pushes token to session and view objects.
      */
     protected function pushToken()
     {
@@ -76,7 +103,7 @@ abstract class ControllerAbstract
     }
 
     /**
-     *
+     * set flash message to view object.
      */
     protected function setFlashMessage()
     {
