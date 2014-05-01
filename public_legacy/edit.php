@@ -40,34 +40,22 @@ if( $view->isCritical() ) goto Html_Page_footer;
         <span class="date">[<?= $form->get( 'createdAt' )->format( 'Y.m.d' ); ?>]</span>
         <dl>
             <dt>Title: <?= $form->getErrorMsg('title') ?></dt>
-            <dd><input type="text" name="<?= $post_form_name ?>[prop][title]" class="form-control"
-                       placeholder="title" value="<?= $form['title']; ?>"/></dd>
+            <dd><?= $form->text('title',
+                    ['class'=>'form-control', 'placeholder'=>'title of this blog'] ); ?></dd>
             <dt>Status:</dt>
             <dd>
-                <label><input type="radio"
-                              name="<?= $post_form_name ?>[prop][status]"
-                              placeholder="status" value="<?= Post::STATUS_PREVIEW ?>"
-                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_PREVIEW)) ?>>Preview</label>
-                <label><input type="radio"
-                              name="<?= $post_form_name ?>[prop][status]"
-                              placeholder="status" value="<?= Post::STATUS_PUBLIC?>"
-                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_PUBLIC)) ?>>Public</label>
-                <label><input type="radio"
-                              name="<?= $post_form_name ?>[prop][status]"
-                              placeholder="status" value="<?= Post::STATUS_HIDE ?>"
-                              <?= $form->checkIf( $form->isEqualTo('status', Post::STATUS_HIDE)) ?> >Hide this</label>
+                <label><?= $form->radio('status', Post::STATUS_PREVIEW ); ?>Preview</label>
+                <label><?= $form->radio('status', Post::STATUS_PUBLIC ); ?>Public</label>
+                <label><?= $form->radio('status', Post::STATUS_HIDE ); ?>Hide this</label>
             </dd>
             
             <dt>Publish At:  <?= $form->getErrorMsg('publishAt') ?></dt>
-            <dd><input type="datetime-local" name="<?= $post_form_name ?>[prop][publishAt]"
-                       class="form-control" style="width: 250px"
-                       placeholder="publish date"
-                       value="<?= $form->get( 'publishAt' )->format('Y-m-d\TH:i:s') ?>" ></dd>
+            <dd><?= $form->dateTime( 'publishAt',
+                    ['class'=>'form-control', 'style'=>'width:250px'] ); ?></dd>
             
             <dt>Content:  <?= $form->getErrorMsg('content') ?></dt>
-            <dd><textarea name="<?= $post_form_name ?>[prop][content]"
-                          rows="10" class="form-control"
-                          placeholder="content here..."><?= $form['content']; ?></textarea></dd>
+            <dd><?= $form->textArea('content',
+                    [ 'rows'=>'10', 'class'=>'form-control', 'placeholder'=>'content here in markdown'] ); ?></dd>
             <dt>Tags:</dt>
             <dd>
                 <?php

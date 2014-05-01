@@ -8,6 +8,7 @@ class PostValidator extends SimpleValidatorAbstract
     public function validate()
     {
         $this->required( 'title' );
+        $this->required( 'status' );
         $this->required( 'publishAt' );
         $this->required( 'content' );
     }
