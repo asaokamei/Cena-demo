@@ -11,12 +11,12 @@
     "require": {
         "cena/cena": "dev-master",
         "cena/doctrine2": "dev-master",
-        "michelf/php-markdown":"1.4.*@dev"
+        "michelf/php-markdown":"1.4.*@dev",
+        "wscore/pages":"dev-master"
     },
     "autoload":{
         "psr-4": {
-            "Demo\\":"src/Demo/",
-            "WScore\\Pages\\":"src/Pages/"
+            "Demo\\":"src/Demo/"
         }
     }
 }
