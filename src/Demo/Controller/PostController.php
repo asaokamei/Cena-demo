@@ -35,6 +35,7 @@ class PostController extends ControllerAbstract
 
     /**
      * @param int $id
+     * @return array
      * @throws \InvalidArgumentException
      */
     public function onGet( $id )
@@ -46,12 +47,13 @@ class PostController extends ControllerAbstract
         $this->posting->getNewComment();
         $this->pushToken();
         $this->setFlashMessage();
-        $this->setView();
+        return $this->setView();
     }
 
     /**
-     * @param int $id
+     * @param int   $id
      * @param array $Cena
+     * @return array
      * @throws \InvalidArgumentException
      */
     public function onPost( $id, $Cena )
@@ -70,17 +72,19 @@ class PostController extends ControllerAbstract
         }
         $this->view->error( 'failed to post comment.' );
         $this->pushToken();
-        $this->setView();
+        return $this->setView();
     }
 
     /**
      */
     public function setView()
     {
-        $this->view['id']       = $this->posting->getPost()->getPostId();
-        $this->view['post']     = $this->posting->getPost();
-        $this->view['comments'] = $this->posting->getComments();
-        $this->view['tag_list'] = $this->posting->getTagList();
-        $this->view['form']     = DemoFactory::getHtmlForms();
+        return array(
+            'id'       => $this->posting->getPost()->getPostId(),
+            'post'     => $this->posting->getPost(),
+            'comments' => $this->posting->getComments(),
+            'tag_list' => $this->posting->getTagList(),
+            'form'     => DemoFactory::getHtmlForms(),
+        );
     }
 }

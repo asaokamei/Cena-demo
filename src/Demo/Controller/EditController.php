@@ -36,6 +36,7 @@ class EditController extends ControllerAbstract
 
     /**
      * @param int|null $id
+     * @return array
      */
     protected function onGet( $id=null )
     {
@@ -44,12 +45,13 @@ class EditController extends ControllerAbstract
             $this->posting->onNew();
         $this->pushToken();
         $this->setFlashMessage();
-        $this->setView( $id );
+        return $this->setView( $id );
     }
 
     /**
-     * @param int|null $id
-     * @param null|array  $Cena
+     * @param int|null   $id
+     * @param null|array $Cena
+     * @return array
      */
     protected function onPost( $id=null, $Cena=null )
     {
@@ -67,27 +69,30 @@ class EditController extends ControllerAbstract
         }
         $this->view->error( 'failed to process the blog post' );
         $this->pushToken();
-        $this->setView( $id );
+        return $this->setView( $id );
     }
 
 
     /**
      * @param int|null $id
+     * @return array
      */
     protected function setView( $id )
     {
-        $this->view['title']    = $id ? "Edit Post: #{$id}" : "New Post";
-        $this->view['id']       = $this->posting->getPost()->getPostId();
-        $this->view['posting']  = $this->posting;
-
-        /*
-         * preparing tags.
-         */
-        $this->view['tags'] = new Tags();
-
-        /*
-         * set up form helper...
-         */
-        $this->view['form'] = DemoFactory::getHtmlForms();
+        return array(
+            'title'    => $id ? "Edit Post: #{$id}" : "New Post",
+            'id'       => $this->posting->getPost()->getPostId(),
+            'posting'  => $this->posting,
+    
+            /*
+             * preparing tags.
+             */
+            'tags' => new Tags(),
+    
+            /*
+             * set up form helper...
+             */
+            'form' => DemoFactory::getHtmlForms(),
+        );
     }
 }

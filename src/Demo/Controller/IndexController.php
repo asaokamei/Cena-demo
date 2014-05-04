@@ -8,6 +8,7 @@ class IndexController extends ControllerAbstract
 {
     /**
      * get list of posts.
+     * @return array
      */
     public function onGet()
     {
