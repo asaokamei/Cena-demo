@@ -64,11 +64,11 @@ class PostController extends ControllerAbstract
         $this->posting->with( array('Cena'=>$Cena) );
         if( !$this->verifyToken() ) {
             $this->flashError( 'invalid token.' );
-            $this->view->location( "post.php?id={$id}" );
+            $this->location( "post.php?id={$id}" );
         }
         elseif( $this->posting->onPostComment( $id ) ) {
             $this->flashMessage( 'added a comment.' );
-            $this->view->location( "post.php?id={$id}" );
+            $this->location( "post.php?id={$id}" );
         }
         $this->view->error( 'failed to post comment.' );
         $this->pushToken();

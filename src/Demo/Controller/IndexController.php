@@ -26,7 +26,7 @@ class IndexController extends ControllerAbstract
     public function onSample()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/sample-db.php' );
-        $this->view->location('index.php');
+        $this->location('index.php');
     }
 
     /**
@@ -35,6 +35,6 @@ class IndexController extends ControllerAbstract
     public function onSetup()
     {
         include( dirname(dirname(dirname(__DIR__))).'/config/setup-db.php' );
-        $this->view->location('index.php');
+        $this->location('index.php');
     }
 }

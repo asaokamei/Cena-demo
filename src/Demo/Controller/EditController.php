@@ -58,14 +58,14 @@ class EditController extends ControllerAbstract
         $this->posting->with( array('Cena'=>$Cena) );
         if( !$this->verifyToken() ) {
             $this->flashError( 'invalid token.' );
-            $this->view->location( "post.php?id={$id}" );
+            $this->location( "post.php?id={$id}" );
         }
         elseif( ( $id ) ?
             $this->posting->onPut( $id ) :
             $this->posting->onPost() )
         {
             $id = $this->posting->getPost()->getPostId();
-            $this->view->location( "post.php?id={$id}" );
+            $this->location( "post.php?id={$id}" );
         }
         $this->view->error( 'failed to process the blog post' );
         $this->pushToken();
