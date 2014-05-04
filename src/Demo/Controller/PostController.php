@@ -70,7 +70,7 @@ class PostController extends ControllerAbstract
             $this->flashMessage( 'added a comment.' );
             $this->location( "post.php?id={$id}" );
         }
-        $this->view->error( 'failed to post comment.' );
+        $this->error( 'failed to post comment.' );
         $this->pushToken();
         return $this->setView();
     }

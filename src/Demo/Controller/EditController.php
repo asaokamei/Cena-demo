@@ -67,7 +67,7 @@ class EditController extends ControllerAbstract
             $id = $this->posting->getPost()->getPostId();
             $this->location( "post.php?id={$id}" );
         }
-        $this->view->error( 'failed to process the blog post' );
+        $this->error( 'failed to process the blog post' );
         $this->pushToken();
         return $this->setView( $id );
     }
