@@ -13,8 +13,10 @@ class IndexController extends ControllerAbstract
     {
         $em = DemoFactory::getEntityManager();
         $query = $em->createQuery( 'SELECT p FROM Demo\Models\PostList p' );
-        $this->view[ 'posts' ] = $query->getResult();
-        $this->view[ 'form'  ]  = DemoFactory::getHtmlForms();
+        return [
+            'posts' => $query->getResult(),
+            'form'  => DemoFactory::getHtmlForms()
+        ];
     }
 
     /**
