@@ -7,7 +7,8 @@ use WScore\Pages\Dispatch;
 require_once( dirname(__DIR__) . '/autoload.php' );
 
 $controller = Dispatch::getInstance( new IndexController() );
-$view = $controller->execute( 'act' );
+$controller->getRequest()->setMethodName('act');
+$view = $controller->execute();
 
 ?>
 <?php include( __DIR__.'/menu/header.php' ); ?>
