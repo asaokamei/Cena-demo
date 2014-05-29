@@ -18,6 +18,7 @@ call_user_func( function() {
         'post.0.1'    => array(
             'prop' => [
                 'title'   => 'About This Blog',
+                'status'  => 1,
                 'content' => "This is the first post sample text to demonstrate Cena technology. \n\n".
                     "##Markdown text\n".
                     "this text uses markdown style, and converted to html. \n\n".
@@ -28,6 +29,7 @@ call_user_func( function() {
         'post.0.2'    => array(
             'prop' => [
                 'title'   => 'Comments and Tags',
+                'status'  => 1,
                 'content' => "This post has two comments and two tags. \n\n".
                     "##Cena make it easy\n\n".
                     "Maybe add/modify/delete them to see how Cena works? ",
